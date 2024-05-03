@@ -74,17 +74,18 @@ renderer.antialias=true;
     cssContainer.appendChild(cssRenderer.domElement);
 
     //tambahkan teks "Hello, World!" ke dalam kubus
+    var textContent = `Hallo, saya Habbatul Qolbi H pembuat game ini. Selamat datang di tempat yang sangat kosong ini.`;
     var text = document.createElement('div');
     text.innerHTML = `
-        <div>Hallo, saya Habbatul Qolbi H pembuat game ini. Selamat datang di tempat yang sangat kosong ini.</div>
-        <div style="color: red;margin-top:20px">Klik untuk meneruskan...</div>
+        <div id="typedText"></div>
+        <div id="clickHere" style="color: red;margin-top:20px;text-align:center;">Klik untuk meneruskan...</div>
     `;
     text.style.width = '80vw'; //ukuran teks responsif berdasarkan lebar layar
     text.style.maxWidth = '400px'; //batas lebar maksimum
     text.style.height = 'auto'; //tinggi otomatis
     text.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-    text.style.textAlign = 'center';
-    text.style.padding = '2vw';
+    text.style.textAlign = 'justify';
+    text.style.padding = '1rem';
     text.style.lineHeight = '1.5';
     text.style.transition = 'opacity 0.5s ease-in-out'; //animasi opacity
     text.style.opacity = '0'; //set opacity awal menjadi 0
@@ -94,29 +95,89 @@ renderer.antialias=true;
 
 
     //tambahkan teks "Hello, World!" ke dalam kubus
+    var textContent2 = `Apakah kamu sering merasa kesepian, meskipun di tengah keramaian keluarga dan teman-teman? Terkadang, kehadiran orang-orang di sekitar kita tidak mampu mengisi rasa hampa yang ada di dalam diri. Kesunyian terasa begitu dalam meskipun di tengah ramainya kehidupan sehari-hari.`;
+
     var text2 = document.createElement('div');
     text2.innerHTML = `
-        <div>Apakah kamu merasa kesepian sehingga walau ingi orang-orang dan keluarga.Apakaingi orang-orang dan keluarga.Apakaingi orang-orang dan keluarga.Apakadikelilingi orang-orang dan keluarga.Apakah kamu merasa kesepian sehingga walau dikelilingi orang-orang dan keluarga.</div>
-        <div style="color: red;margin-top:20px">Klik untuk meneruskan...</div>
+        <div id="typedText"></div>
+        <div id="clickHere" style="color: red; margin-top: 20px;text-align:center;">Klik untuk meneruskan...</div>
     `;
     text2.style.width = '80vw'; //ukuran teks responsif berdasarkan lebar layar
     text2.style.maxWidth = '400px'; //batas lebar maksimum
     text2.style.height = 'auto'; //inggi otomatis
     text2.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-    text2.style.textAlign = 'center';
-    text2.style.padding = '2vw';
+    text2.style.textAlign = 'justify';
+    text2.style.padding = '1rem';
     text2.style.lineHeight = '1.5';
     text2.style.transition = 'opacity 0.5s ease-in-out'; //animasi opacity transisi
     text2.style.opacity = '0'; //set opacity awal menjadi 0
     var label2 = new CSS2DObject(text2);
     label2.position.set(0, 0, 5);
+
+    //kondisional, digunakan untuk mencegah kodingan dalam eventhandler label bekerja ketika animasi berjalan
+    var isTyping = true;
+
+    function typeWriter(textElement, text, speed, clickHereElement) {
+        return new Promise((resolve) => {
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    textElement.textContent += text.charAt(i);
+                    i++;
+                    requestAnimationFrame(type);
+                    //jika opacity 0 maka kosongkan teks
+                } else {
+                    //kembalikan kondisi false bila ketiks selesai
+                    isTyping=false;
+                    resolve();
+                    clickHereElement.style.color ="blue";
+                }
+            }
+            type();
+        });
+    }
+
+    //animasi ketik untuk menampilkan teks
+    async function animateText(textElement, textContent, speed, clickHereElement) {
+         //hapus teks sebelum memulai animasi ketik
+        textElement.textContent = '';
+        await typeWriter(textElement, textContent, speed, clickHereElement);
+    }
+
+    //ketika opacity mencapai 1, jalankan animasi mengetik
+    function opacityTransitionEndHandler(labelElement, textContent, speed) {
+        //kondisi typing true sebelum ke animasi typing (agar tidak terjadi glitch animasi)
+        isTyping = true;
+        var typedTextElement = labelElement.querySelector('#typedText');
+        var clickHereElement = labelElement.querySelector('#clickHere');
+        clickHereElement.style.color ='red';
+        if (labelElement.style.opacity === '1') {
+            animateText(typedTextElement, textContent, speed, clickHereElement);
+        } else if (labelElement.style.opacity === '0') {
+            typedTextElement.textContent = ''; //kosongkan teks saat opacity kembali menjadi 0
+        }
+    }
+    //event listener untuk label2
+    label2.element.addEventListener('transitionend', (event) => {
+        if (event.propertyName === 'opacity') {
+            opacityTransitionEndHandler(label2.element, textContent2, 1000);
+        }
+    });
+
+    //event listener untuk label
+    label.element.addEventListener('transitionend', (event) => {
+        if (event.propertyName === 'opacity') {
+            opacityTransitionEndHandler(label.element, textContent, 1000);
+        }
+    });
+
+
+
+
   
-
-
+    //definisikan object raycaster dan mouse untuk interaksi mouse dengan scene
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2(-2, -2); 
-
-
 
     //deteksi mouse agar bisa realtime
     function onMouseMove(event) {
@@ -135,21 +196,22 @@ renderer.antialias=true;
 
     //step 1
     label.element.addEventListener('click', function(event) {
-        label.element.style.opacity ='0';
-        scene.add(label2);
-        gotoStep=2;
-        //ini dijalankan ketika label ada bukan ketika gotoStep=1
-        label.element.addEventListener('transitionend', function(event){
-            if(gotoStep==2){
-                console.log("step satu dijalankan")
-                scene.remove(label);
-                
-                //gunakan disini karena pasti tidak bisa dihindarkan dari hover jadi nantinya animasi akan tetap berjalan
-                label2.element.style.opacity ='1';
-            }
-        });
-
-        console.log(gotoStep);
+        //jika animasi typing tidak berjalan
+        if(!isTyping){
+            label.element.style.opacity ='0';
+            scene.add(label2);
+            gotoStep=2;
+            //ini dijalankan ketika label ada bukan ketika gotoStep=1
+            label.element.addEventListener('transitionend', function(event){
+                if(gotoStep==2){
+                    console.log("step satu dijalankan")
+                    scene.remove(label);
+                    
+                    //gunakan disini karena pasti tidak bisa dihindarkan dari hover jadi nantinya animasi akan tetap berjalan
+                    label2.element.style.opacity ='1';
+                }
+            });
+        }
     });
 
     //step 1
@@ -159,20 +221,22 @@ renderer.antialias=true;
 
     //step 2
     label2.element.addEventListener('click', function(event) {
-        gotoStep=3;
-        label2.element.style.opacity ='0';
-        label2.element.addEventListener('transitionend', function(event){
-            if(gotoStep==3){
-                scene.remove(label2)
-                gotoStep=0;
-                cssContainer.style.pointerEvents = 'none';
-                scene.add(label);
+        //jika animasi typing tidak berjalan
+        if(!isTyping){
+            gotoStep=3;
+            label2.element.style.opacity ='0';
+            label2.element.addEventListener('transitionend', function(event){
+                if(gotoStep==3){
+                    scene.remove(label2)
+                    gotoStep=0;
+                    cssContainer.style.pointerEvents = 'none';
+                    scene.add(label);
 
-                //setelah selesai klik nya atur mouse agar
-                mouse.set(-2, -2);
-            }
-        });
-        console.log(gotoStep);
+                    //setelah selesai klik nya atur mouse agar
+                    mouse.set(-2, -2);
+                }
+            });
+        }
     });
 
     //step 2
@@ -214,7 +278,6 @@ renderer.antialias=true;
         //memperhatikan kondisi jumlah pesan
         if (intersects.length > 0) {
             if(gotoStep==0){
-                console.log(gotoStep);
                 canvas.style.cursor = 'pointer';
                 cube.material.color.set(0xff0000);
             }else{
@@ -243,6 +306,7 @@ renderer.antialias=true;
         onMouseMoveOnBox();
         renderer.render(scene, camera);
         cssRenderer.render(scene, camera);
+        console.log(isTyping);console.log(gotoStep);
     }
 
     animate();
