@@ -1,6 +1,10 @@
-import * as THREE from 'three';
-import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
+import * as THREE from "three";
+import { CSS2DRenderer,CSS2DObject} from "three/examples/jsm/renderers/CSS2DRenderer.js";
+import {CSS3DRenderer,CSS3DObject,} from "three/examples/jsm/renderers/CSS3DRenderer.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import * as TWEEN from "three/examples/jsm/libs/tween.module.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 //buat elemen canvas baru
 const canvas = document.getElementById('canvas');
@@ -12,7 +16,7 @@ var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, powerPr
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.antialias=true;
 
-camera.position.set(400,0,100);
+camera.position.set(400,0,10);
 
 
 //untuk keperluan upload GLTF
@@ -68,6 +72,117 @@ loader.load("gltf/computer2.gltf",function (gltf) {
 );
 
 
+      // Buat secondary scene, camera, dan render target
+      const renderTarget = new THREE.WebGLRenderTarget(512, 512); // Ubah ukuran render target menjadi 512x512
+      const secondaryCamera = new THREE.PerspectiveCamera(
+        75,
+        renderTarget.width / renderTarget.height,
+        0.1,
+        1000
+      );
+
+      const secondaryScene = new THREE.Scene();
+
+
+      new RGBELoader()
+        .setDataType(THREE.FloatType)
+        .load("hdri/hdr_sky.hdr", function (hdrCubeMap) {
+          hdrCubeMap.encoding = THREE.LinearEncoding;
+
+          const pmremGenerator = new THREE.PMREMGenerator(renderer);
+          pmremGenerator.compileEquirectangularShader();
+
+          const envMap = pmremGenerator.fromEquirectangular(hdrCubeMap).texture;
+          envMap.format = THREE.RGBAFormat;
+          secondaryScene.environment = envMap; 
+
+          hdrCubeMap.dispose();
+          secondaryScene.background = envMap;
+
+          const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); 
+          secondaryScene.add(ambientLight);
+        });
+
+      //Render Target
+      const crtTVShader = {
+        uniforms: {
+          tDiffuse: { value: null },
+          time: { value: 0 },
+        },
+        vertexShader: `
+        varying vec2 vUv;
+        void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    `,
+        fragmentShader: `
+    uniform sampler2D tDiffuse;
+    uniform float time;
+    varying vec2 vUv;
+
+    void main() {
+        vec2 uv = vUv;
+
+        // Efek vignette
+        float radius = 0.75;
+        float softness = 0.25;
+        vec2 center = vec2(0.5, 0.5);
+        float vignette = smoothstep(radius, radius - softness, length(uv - center));
+
+        // Efek garis lurus
+        vec2 p = mod(uv * vec2(100.0, 60.0), vec2(1.0));
+        vec3 col = texture2D(tDiffuse, uv).rgb;
+        col *= 0.9 + 0.1 * sin(30.0 * p.x * sin(time) + 30.0 * p.y * cos(time));
+        col *= 0.95 + 0.05 * sin(32.0 * p.x * sin(time) + 32.0 * p.y * cos(time));
+        
+        // Gabungkan efek vignette dan garis lurus
+        col *= vignette;
+
+        gl_FragColor = vec4(col, 1.0);
+    }
+    `,
+      };
+
+      var materialMonitor = new THREE.ShaderMaterial({
+        uniforms: THREE.UniformsUtils.clone(crtTVShader.uniforms),
+        vertexShader: crtTVShader.vertexShader,
+        fragmentShader: crtTVShader.fragmentShader,
+      });
+
+      materialMonitor.uniforms.tDiffuse.value = renderTarget.texture;
+
+      var geometry = new THREE.PlaneGeometry(5, 4); 
+      var mesh = new THREE.Mesh(geometry, materialMonitor);
+      mesh.position.set(400, 3.4, -4.56);
+      mesh.scale.set(3.5, 3, 1);
+      mesh.rotation.set(-0.139, 0, 0); 
+
+      scene.add(mesh);
+
+      const controls = new OrbitControls(secondaryCamera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.25;
+      controls.enableZoom = true;
+      controls.enablePan = false;
+
+      controls.target.set(0, 0, -25);
+
+
+      loader.load(
+        "gltf/SeabedLamp.gltf",
+        function (gltf) {
+          const model = gltf.scene;
+          model.position.set(0, -8, -25); 
+          model.scale.set(30, 30, 30);
+          model.name = "Cube015"; 
+          secondaryScene.add(model); 
+        },
+        undefined,
+        function (error) {
+          console.error(error);
+        }
+      );
 
     //tambahkan pencahayaan titik
     var pointLights = [
@@ -358,6 +473,10 @@ loader.load("gltf/computer2.gltf",function (gltf) {
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
         onMouseMoveOnBox();
+        controls.update();
+        renderer.setRenderTarget(renderTarget);
+        renderer.render(secondaryScene, secondaryCamera);
+        renderer.setRenderTarget(null);
         renderer.render(scene, camera);
         cssRenderer.render(scene, camera);
     }
