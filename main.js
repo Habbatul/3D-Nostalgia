@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 //buat elemen canvas baru
 const canvas = document.getElementById('canvas');
@@ -11,6 +12,60 @@ var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, powerPr
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.antialias=true;
 
+camera.position.set(400,0,100);
+
+
+//untuk keperluan upload GLTF
+const loader = new GLTFLoader();
+var model;
+
+loader.load("gltf/computer2.gltf",function (gltf) {
+    model = gltf.scene;
+    model.position.set(400, -9, 4); 
+    model.scale.set(10, 10, 10); 
+    model.name = "Cube013"; 
+    scene.add(model);
+
+    var pointLights = [
+      new THREE.PointLight(0xffffff, 20),
+      new THREE.PointLight(0xffffff, 30),
+      new THREE.PointLight(0xffffff, 30),
+      new THREE.PointLight(0xffffff, 30),
+      new THREE.PointLight(0xffffff, 20),
+    ];
+    pointLights[0].position.set(400, 0, 0);
+    pointLights[1].position.set(410, 0, 20);
+    pointLights[2].position.set(420, 0, -20);
+    pointLights[3].position.set(380, 0, -20);
+    pointLights[3].position.set(400, 2, -30);
+    pointLights.forEach((pointLight) => {
+      scene.add(pointLight);
+    });
+
+    const spotLight2 = new THREE.SpotLight(0xffffff, 1000);
+    spotLight2.position.set(350, 30, 50);
+    spotLight2.angle = Math.PI / 10;
+    spotLight2.penumbra = 1;
+    spotLight2.decay = 1.2;
+    spotLight2.distance = 90;
+
+    spotLight2.target.position.set(400, 0, -4); 
+
+    spotLight2.castShadow = true;
+
+    spotLight2.shadow.mapSize.width = 512;
+    spotLight2.shadow.mapSize.height = 512;
+
+    scene.add(spotLight2);
+
+    const spotLightHelper = new THREE.SpotLightHelper(spotLight2);
+    // scene.add(spotLightHelper);
+  },
+  undefined,
+  function (error) {
+    console.error(error);
+  }
+);
 
 
 
@@ -58,7 +113,6 @@ renderer.antialias=true;
     floor.position.y = -10;
     scene.add(floor);
 
-    camera.position.z = 30;
 
 
     //buat container untuk renderer CSS2D
@@ -306,7 +360,6 @@ renderer.antialias=true;
         onMouseMoveOnBox();
         renderer.render(scene, camera);
         cssRenderer.render(scene, camera);
-        console.log(isTyping);console.log(gotoStep);
     }
 
     animate();
