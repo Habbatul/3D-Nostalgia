@@ -506,6 +506,7 @@ loader.load("gltf/computer2.gltf",function (gltf) {
         materialMonitor.uniforms.time.value += 0.01;
 
         rotateCamera()
+        materialMonitor.uniforms.time.value += 0.01;
         controls.update();
         renderer.setRenderTarget(renderTarget);
         renderer.render(secondaryScene, secondaryCamera);
