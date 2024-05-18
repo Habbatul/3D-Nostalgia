@@ -16,8 +16,8 @@ var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, powerPr
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.antialias=true;
 
-camera.position.set(400,0,10);
-
+camera.position.set(400,0,100);
+camera.rotation.set(-0.5,0.5,0);
 
 //untuk keperluan upload GLTF
 const loader = new GLTFLoader();
@@ -184,49 +184,23 @@ loader.load("gltf/computer2.gltf",function (gltf) {
         }
       );
 
-    //tambahkan pencahayaan titik
-    var pointLights = [
-        new THREE.PointLight(0xffffff, 30),
-        new THREE.PointLight(0xffffff, 30),
-        new THREE.PointLight(0xffffff, 30),
-        new THREE.PointLight(0xffffff, 30),
-        new THREE.PointLight(0xffffff, 30),
-        new THREE.PointLight(0xffffff, 30)
-    ];
+      let cube;
 
-    pointLights[0].position.set(0, 10, 0);
-    pointLights[1].position.set(0, -10, 0);
-    pointLights[2].position.set(10, 0, 0);
-    pointLights[3].position.set(-10, 0, 0);
-    pointLights[4].position.set(0, 0, 10);
-    pointLights[5].position.set(0, 0, -10);
-
-    pointLights.forEach(pointLight => {
-        scene.add(pointLight);
-
-        // //penanda
-        // var sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-        // var sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-        // var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-        // sphere.position.copy(pointLight.position);
-        // scene.add(sphere);
-    });
-
-
-    //tambahkan sebuah kubus ke dalam scene
-    var geometry = new THREE.BoxGeometry(10, 10, 10);
-    var material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });              
-    var cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-
-
-    //tambahkan sebuah plane untuk lantai
-    var floorGeometry = new THREE.PlaneGeometry(200, 200, 10, 10);
-    var floorMaterial = new THREE.MeshStandardMaterial({ color: 0xeeeeee });
-    var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    floor.rotation.x = -Math.PI / 2;
-    floor.position.y = -10;
-    scene.add(floor);
+      const loaderx = new THREE.TextureLoader();
+      loaderx.load("hdri/cc2.jpg", function (texture) {
+        const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
+        rt.fromEquirectangularTexture(renderer, texture);
+        scene.background = rt.texture;
+        const geometry = new THREE.BoxGeometry(10, 10, 10);
+        const material = new THREE.MeshStandardMaterial({
+          color: 0x00ff00,
+          envMap: rt.texture,
+          roughness: 0,
+          metalness: 1,
+        });
+        cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+      });
 
 
 
