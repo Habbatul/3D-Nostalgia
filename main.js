@@ -318,20 +318,35 @@ loader.load("gltf/computer2.gltf",function (gltf) {
 
 
   
-    //definisikan object raycaster dan mouse untuk interaksi mouse dengan scene
-    var raycaster = new THREE.Raycaster();
-    var mouse = new THREE.Vector2(-2, -2); 
+      //definisikan object raycaster dan mouse untuk interaksi mouse dengan scene
+      var raycaster = new THREE.Raycaster();
+      var mouse = new THREE.Vector2(-2, -2);
 
-    //deteksi mouse agar bisa realtime
-    function onMouseMove(event) {
+      //deteksi mouse agar bisa realtime
+      function onMouseMove(event) {
         // Calculate mouse position in normalized device coordinates
         // (-1 to +1) for both components
         const rect = canvas.getBoundingClientRect();
         mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
         mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-    }
+      }
 
-    window.addEventListener('mousemove', onMouseMove, false); 
+      window.addEventListener("mousemove", onMouseMove, false);
+      
+      //ini untuk deteksi touchscreen nya
+      function onTouchMove(event) {
+        // Calculate touch position in normalized device coordinates
+        // (-1 to +1) for both components
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = ((event.touches[0].clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y =
+          -((event.touches[0].clientY - rect.top) / rect.height) * 2 + 1;
+      }
+
+      window.addEventListener("touchmove", onTouchMove, false);
+
+
+
 
 
     //kondisional untuk textbox
