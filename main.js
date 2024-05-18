@@ -462,6 +462,10 @@ loader.load("gltf/computer2.gltf",function (gltf) {
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
         onMouseMoveOnBox();
+
+        materialMonitor.uniforms.time.value += 0.01;
+
+        
         controls.update();
         renderer.setRenderTarget(renderTarget);
         renderer.render(secondaryScene, secondaryCamera);
