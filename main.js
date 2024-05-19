@@ -475,6 +475,44 @@ new RGBELoader()
   });
 
 
+      // //ini animasi Untuk Mesh (komputer)
+      function rotateCamera() {
+
+          const pivot = new THREE.Vector3(400, -9, 4);
+          const pivot2 = new THREE.Vector3(400, 0, -8);
+          const pivot3 = new THREE.Vector3(400, 0, 0); 
+
+          const distance = 30;
+
+          const angleX =1.5 + Math.min(Math.max(mouse.x, -0.5), 0.5) * (Math.PI / 4);
+          const angleY =Math.min(Math.max(-mouse.y + 1, 0.5), 10) * (Math.PI / 4);
+
+          const newX = pivot.x + distance * Math.cos(angleX);
+          const newY = pivot.y + distance * Math.sin(angleY);
+          const newZ = pivot3.z + distance * Math.sin(angleX);
+
+          new TWEEN.Tween(camera.position)
+            .to({ x: newX, y: newY, z: newZ }, 1000)
+            .easing(TWEEN.Easing.Quadratic.Out)
+            .start();
+          camera.lookAt(pivot2);
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //================ Penerapan shader untuk layar crt + vignette pada plane ======================
 const crtTVShader = {
@@ -939,6 +977,7 @@ function buttonOverCanvasVisible() {
       containerButtonx.style.opacity = "1";
     }, 10);
 
+
     animasitransisiend = false;
   }
 }
@@ -985,5 +1024,27 @@ function animate() {
   renderer.render(scene, camera);
   cssRenderer.render(scene, camera);
 }
+
+    //fungsi animasi
+    function animate() {
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        
+        onMouseMoveOnBox();
+        
+        TWEEN.update();
+        materialMonitor.uniforms.time.value += 0.01;
+
+        rotateCamera()
+        materialMonitor.uniforms.time.value += 0.01;
+        controls.update();
+        renderer.setRenderTarget(renderTarget);
+        renderer.render(secondaryScene, secondaryCamera);
+        renderer.setRenderTarget(null);
+        renderer.render(scene, camera);
+        cssRenderer.render(scene, camera);
+    }
+
 
 animate();
