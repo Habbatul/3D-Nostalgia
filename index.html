@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Nostalgia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Jersey+15&family=Saira+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
+      .hidden {
+        display: none;
+        visibility: hidden;
+      }
+      .flex {
+        display: flex;
+      }
+      .inter {
+        font-family: "Inter", sans-serif;
+      }
+      .jersey {
+        font-family: "Jersey 15", sans-serif;
+      }
+      .saira-condensed-light {
+        font-family: "Saira Condensed", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+    </style>
+    <script type="module" crossorigin src="/3D-Nostalgia/assets/index-DK0pcBZa.js"></script>
+  </head>
+  <body class="saira-condensed-light" style="overflow: hidden">
+    <canvas id="canvas"></canvas>
+
+    <div id="container-buttonx" class="hidden" style="transition: opacity 0.5s ease-in-out; opacity: 0; position: absolute; top: 8%; left: 50%; transform: translate(-50%, -50%); z-index: 99; display: flex; justify-content: center; align-items: center;">
+        <button id="buttonx" class="jersey" style="background: linear-gradient(120deg, rgba(0, 201, 255, 0.2), rgba(126, 208, 255, 0.8)); border: 1px solid rgb(0, 0, 0); color: black; padding: 0.4rem 1rem; text-align: center; text-decoration: none; display: inline-block; font-size: 1rem; cursor: pointer; border-radius: 10px; margin-right: 0.5rem; width: 5.5rem;">Menuju Box</button>
+        <button id="buttonx2" class="jersey" style="background: linear-gradient(120deg, rgba(0, 201, 255, 0.2), rgba(126, 208, 255, 0.8)); border: 1px solid rgb(0, 0, 0); color: black; padding: 0.4rem 1rem; text-align: center; text-decoration: none; display: inline-block; font-size: 1rem; cursor: pointer; border-radius: 10px; margin-left: 0.5rem; width: 5.5rem;">Menuju Nostalgia</button>
+    </div>
+    <div id="container-objective" class="hidden inter" style="transition: opacity 0.5s ease-in-out; opacity: 1; position: absolute; top: 5rem; left: 50%; transform: translate(-50%, -50%); z-index: 99; display: flex; justify-content: center; align-items: center;">
+        <p style="color: white;text-align: center;font-size: 2.5rem;font-weight:300;">Click The Cube</p>
+    </div>
+</body>
+</html>
