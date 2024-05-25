@@ -455,7 +455,7 @@ const secondaryScene = new THREE.Scene();
 //Muat HDR sebagai env map
 new RGBELoader()
   .setDataType(THREE.FloatType)
-  .load("hdri/hdr_sky.hdr", function (hdrCubeMap) {
+  .load("hdri/terrain.hdr", function (hdrCubeMap) {
     hdrCubeMap.encoding = THREE.LinearEncoding;
 
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
@@ -470,7 +470,7 @@ new RGBELoader()
     //Gunakan gambar HDRI sebagai background
     secondaryScene.background = envMap;
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
     secondaryScene.add(ambientLight);
   });
 
@@ -541,6 +541,8 @@ controls.dampingFactor = 0.25;
 controls.enableZoom = true;
 controls.enablePan = false;
 controls.target.set(0, 0, -25);
+controls.minDistance = 20; 
+controls.maxDistance = 120; 
 
 
 //============================== gltf loader untuk rendertarget
@@ -796,103 +798,99 @@ function onMouseMoveOnBox() {
 var pivot1 = new THREE.Vector3(0, -8, -25);
 var initialPosition1 = new THREE.Vector3().copy(secondaryCamera.position);
 var distance1 = initialPosition1.distanceTo(pivot1);
-var InitialAngle1 = 1.5;
+var InitialAngle1 = 0;
 var tween;
 var rotate1;
 
 var isMouseDown = false;
 var isZooming = false;
 
-function initialAnimation(distanceFromPivot) {
-  tween = new TWEEN.Tween(secondaryCamera.position)
-    .to(
-      {
-        x: pivot1.x + distanceFromPivot * Math.cos(InitialAngle1),
-        y: 0,
-        z: pivot1.z + distanceFromPivot * Math.sin(InitialAngle1),
-      },
-      500
-    )
-    .onComplete(() => {
-      rotate1 = new TWEEN.Tween({ angle: 1.5 })
-        .to({ angle: Math.PI * 2.5 }, 4000)
-        .onUpdate((obj) => {
-          var angle = obj.angle;
-          var newX = pivot1.x + distanceFromPivot * Math.cos(angle);
-          var newZ = pivot1.z + distanceFromPivot * Math.sin(angle);
-          secondaryCamera.position.set(newX, 0, newZ);
-          secondaryCamera.lookAt(pivot1);
+function initialAnimation(distanceFromPivot, currentAngle) {
+    tween = new TWEEN.Tween(secondaryCamera.position)
+        .to({ x: pivot1.x + distanceFromPivot * Math.cos(currentAngle), y: initialPosition1.y, z: pivot1.z + distanceFromPivot * Math.sin(currentAngle) }, 500)
+        .onComplete(() => {
+            rotate1 = new TWEEN.Tween({ angle: currentAngle })
+                .to({ angle: currentAngle + Math.PI * 2 }, 4000)
+                .onUpdate((obj) => {
+                    var angle = obj.angle;
+                    var newX = pivot1.x + distanceFromPivot * Math.cos(angle);
+                    var newZ = pivot1.z + distanceFromPivot * Math.sin(angle);
+                    secondaryCamera.position.set(newX, initialPosition1.y, newZ);
+                    secondaryCamera.lookAt(pivot1);
+                })
+                .repeat(Infinity)
+                .start();
         })
-        .repeat(Infinity)
         .start();
-    })
-    .start();
 }
 
-initialAnimation(distance1);
+initialAnimation(distance1, InitialAngle1);
+
+//mendapatkan angle saat ini
+function getCurrentAngle(objectPosition, pivotPosition) {
+  return Math.atan2(objectPosition.z - pivotPosition.z, objectPosition.x - pivotPosition.x);
+}
 
 //Memulai Tween jika tidak sedang menahan tombol mouse
-function startTween(distance) {
+function startTween(distance, currentAngle) {
   if (!isMouseDown && !isZooming) {
-    initialAnimation(distance);
+      initialAnimation(distance, currentAngle);
   }
 }
 
 //Menghentikan Tween saat menahan tombol mouse
 function stopTween() {
   if (isMouseDown || isZooming) {
-    tween.stop();
-    if (rotate1) rotate1.stop(); 
+      tween.stop();
+      if (rotate1) rotate1.stop(); //Menghentikan tween rotate jika ada
   }
 }
 
-//Event listener untuk mouse down dan mouse up
 function onMouseDown(event) {
-  isMouseDown = true;
-  stopTween();
+      isMouseDown = true;
+      stopTween();
 }
 
 function onMouseUp(event) {
-  isMouseDown = false;
-  startTween(
-    new THREE.Vector3().copy(secondaryCamera.position).distanceTo(pivot1)
-  );
+      isMouseDown = false;
+      startTween(new THREE.Vector3().copy(secondaryCamera.position).distanceTo(pivot1), getCurrentAngle(new THREE.Vector3().copy(secondaryCamera.position),pivot1));
 }
 
 //Event listener untuk mouse move, mouse down, dan mouse up
 document.addEventListener("mousedown", onMouseDown, false);
 document.addEventListener("mouseup", onMouseUp, false);
 
-//Event listener untuk touch start dan touch end
-document.addEventListener("touchstart",function (event) {
-    onMouseDown(event.touches[0]);
-  },
-  false
-);
+//Event listener untuk touch start
+document.addEventListener("touchstart", function(event) {
+  if (!isZooming) {
+      if (event.touches.length > 2) {
+          onMouseDown(event.touches[0]);
+      }
+  }
+}, false);
 
-document.addEventListener("touchend",function (event) {
-    onMouseUp(
-      event.touches.length === 0
-        ? { clientX: 0, clientY: 0 }
-        : event.touches[0]
-    );
-  },
-  false
-);
+//Event listener untuk touch end
+document.addEventListener("touchend", function(event) {
+  if (!isZooming) {
+      if (event.changedTouches.length > 2) {
+          onMouseUp(event.changedTouches[0]);
+      }  
+  }
+}, false);
 
-// Event listener untuk menghentikan animasi saat zoom dimulai
+//Event listener untuk menghentikan animasi saat zoom dimulai
 controls.addEventListener("start", function () {
   isZooming = true;
   stopTween();
 });
 
-// Event listener untuk memulai kembali animasi setelah zoom selesai
+//Event listener untuk memulai kembali animasi setelah zoom selesai
 controls.addEventListener("end", function () {
   isZooming = false;
-  startTween(
-    new THREE.Vector3().copy(secondaryCamera.position).distanceTo(pivot1)
-  );
+  startTween(new THREE.Vector3().copy(secondaryCamera.position).distanceTo(pivot1), getCurrentAngle(new THREE.Vector3().copy(secondaryCamera.position),pivot1));
 });
+
+
 
 
 //==================Akses elemen button (yang ada diatas canvas lihat pada html)=========================
