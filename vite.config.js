@@ -19,6 +19,10 @@ export default defineConfig({
             src: 'hdri/*',
             dest: 'hdri'
           }
+          {
+            src: 'texture/*',
+            dest: 'texture'
+          }
       ]
     })
   ],
