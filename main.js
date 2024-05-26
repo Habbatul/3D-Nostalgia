@@ -452,6 +452,22 @@ const secondaryCamera = new THREE.PerspectiveCamera(
 
 const secondaryScene = new THREE.Scene();
 
+//Ini untuk frame bentuk windows xp dan paint
+var textureLoader = new THREE.TextureLoader();
+var textureXp = textureLoader.load('texture/paint-xp.png');
+var materialjpeg = new THREE.MeshBasicMaterial({ 
+  map: textureXp, 
+  transparent: true
+});
+var geometryXp = new THREE.PlaneGeometry(5, 4); 
+var PlaneFrame = new THREE.Mesh(geometryXp, materialjpeg);
+secondaryCamera.add(PlaneFrame);
+secondaryScene.add(secondaryCamera);
+PlaneFrame.scale.set(3.02,3.8)
+PlaneFrame.position.set(0, -0.1, -10);
+
+
+
 //Muat HDR sebagai env map
 new RGBELoader()
   .setDataType(THREE.FloatType)
@@ -497,8 +513,8 @@ const crtTVShader = {
     vec2 uv = vUv;
 
     // Efek vignette
-    float radius = 0.75;
-    float softness = 0.25;
+    float radius = 0.85;
+    float softness = 0.4;
     vec2 center = vec2(0.5, 0.5);
     float vignette = smoothstep(radius, radius - softness, length(uv - center));
 
