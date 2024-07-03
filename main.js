@@ -123,9 +123,9 @@ cssContainer.appendChild(cssRenderer.domElement);
 
 var text5 = document.createElement("div");
 text5.innerHTML = `
-  <div id="typedText">Aplikasi ini memang setengah jadi karena developernya udah capek. Mau menuju ke tempat nostalgia? </div>
+  <div id="typedText">This app is half-finished because the developer is tired. Want to go to a nostalgic place? </div>
   <div id="buttonContainer" style="display:flex;justify-content:center;margin-top: 20px;">
-      <button id="button1" class="saira-condensed-light" style="margin-right:0.3rem;cursor:pointer;">Ayo menuju kesana</button><button id="button2" class="saira-condensed-light" style="margin-left:0.3rem;cursor:pointer;">Saya ingin disini saja</button>
+      <button id="button1" class="saira-condensed-light" style="margin-right:0.3rem;cursor:pointer;">Let's go there</button><button id="button2" class="saira-condensed-light" style="margin-left:0.3rem;cursor:pointer;">I just want to be here</button>
   </div>
 `;
 text5.style.width = "80vw"; //ukuran teks responsif berdasarkan lebar layar
@@ -141,11 +141,11 @@ var label5 = new CSS2DObject(text5);
 label5.position.set(0, 0, 5);
 
 //label1
-var textContent = `Hallo, saya Habbatul Qolbi H pembuat game ini. Selamat datang di tempat yang sangat kosong ini.`;
+var textContent = `Hello, I am Habbatul Qolbi H the creator of this game. Welcome to this very empty place.`;
 var text = document.createElement("div");
 text.innerHTML = `
   <div id="typedText"></div>
-  <div id="clickHere" style="color: red;margin-top:20px;text-align:center;">Klik untuk meneruskan...</div>
+  <div id="clickHere" style="color: red;margin-top:20px;text-align:center;">Click to continue...</div>
 `;
 text.style.width = "80vw"; //ukuran teks responsif berdasarkan lebar layar
 text.style.maxWidth = "400px"; //batas lebar maksimum
@@ -161,11 +161,11 @@ label.position.set(0, 0, 5);
 scene.add(label);
 
 
-var textContent2 = `Apakah kamu sering merasa kesepian, meskipun di tengah keramaian keluarga dan teman-teman?`;
+var textContent2 = `Do you often feel lonely, even when surrounded by family and friends?`;
 var text2 = document.createElement("div");
 text2.innerHTML = `
   <div id="typedText"></div>
-  <div id="clickHere" style="color: red; margin-top: 20px;text-align:center;">Klik untuk meneruskan...</div>
+  <div id="clickHere" style="color: red; margin-top: 20px;text-align:center;">Click to continue...</div>
 `;
 text2.style.width = "80vw"; //ukuran teks responsif berdasarkan lebar layar
 text2.style.maxWidth = "400px"; //batas lebar maksimum
@@ -180,11 +180,11 @@ var label2 = new CSS2DObject(text2);
 label2.position.set(0, 0, 5);
 
 
-var textContent3 = `Terkadang, kehadiran orang-orang di sekitar kita tidak mampu mengisi rasa hampa yang ada di dalam diri. Kesunyian terasa begitu dalam meskipun di tengah ramainya kehidupan sehari-hari.`;
+var textContent3 = `Sometimes, the presence of people around us is not enough to fill the emptiness inside. The silence feels so deep even in the midst of the hustle and bustle of everyday life.`;
 var text3 = document.createElement("div");
 text3.innerHTML = `
   <div id="typedText"></div>
-  <div id="clickHere" style="color: red; margin-top: 20px;text-align:center;">Klik untuk meneruskan...</div>
+  <div id="clickHere" style="color: red; margin-top: 20px;text-align:center;">Click to continue...</div>
 `;
 text3.style.width = "80vw"; //ukuran teks responsif berdasarkan lebar layar
 text3.style.maxWidth = "400px"; //batas lebar maksimum
@@ -199,13 +199,13 @@ var label3 = new CSS2DObject(text3);
 label3.position.set(0, 0, 5);
 
 
-var textContent4 = `Ayo sedikit bernostalgia menuju perangkat lama yang sudah ditinggalkan. Kita akan menjelajah mengenai masa-masa yang indah bersama.`;
+var textContent4 = `Let's take a little nostalgia to the old devices that have been abandoned. We will explore about the good times together.`;
 var text4 = document.createElement("div");
 text4.innerHTML = `
   <div id="typedText"></div>
-  <div id="clickHere" style="color: red; margin-top: 20px;text-align:center;margin-bottom:10px;">Tunggu tombol keluar..</div>
+  <div id="clickHere" style="color: red; margin-top: 20px;text-align:center;margin-bottom:10px;">Wait for the exit button..</div>
   <div id="buttonContainer" class="hidden" style="justify-content:center;margin-top: 20px;">
-      <button id="button1" class="saira-condensed-light" style="margin-right:0.3rem;cursor:pointer;">Ayo menuju kesana</button><button id="button2" class="saira-condensed-light" style="margin-left:0.3rem;cursor:pointer;">Saya ingin disini saja</button>
+      <button id="button1" class="saira-condensed-light" style="margin-right:0.3rem;cursor:pointer;">Let's go there</button><button id="button2" class="saira-condensed-light" style="margin-left:0.3rem;cursor:pointer;">I just want to be here</button>
   </div>
 `;
 text4.style.width = "80vw"; //ukuran teks responsif berdasarkan lebar layar
