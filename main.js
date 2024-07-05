@@ -561,7 +561,7 @@ controls.dampingFactor = 0.25;
 controls.enableZoom = true;
 controls.enablePan = false;
 controls.target.set(0, 0, -25);
-controls.minDistance = 20; 
+controls.minDistance = 24; 
 controls.maxDistance = 120; 
 
 
