@@ -24,8 +24,12 @@ renderer.antialias = true;
 const music = new Audio("audio/liminal-horror.mp3");
 music.loop = true;
 music.volume = 0.5;
-music.play();
 
+canvas.addEventListener('click', ()=>{
+  if (music.paused) {
+    music.play();
+  }
+})
 
 //================== Loader untuk jpeg jadi hdri juga ada cube untuk scene awal ==================
 let cube;
