@@ -5,7 +5,7 @@
 
 A three-dimensional website with a digital nostalgia theme for Gen Z, featuring a lonely and liminal atmosphere. This website is created as an exploration of WebGL using Three.js. My exploration involves basic trigonometry, shaders, application of GLTF and HDRI, the combination of WebGL-Three.js with JavaScript event handlers, and more.
 
-### Run on Your PC
+## Run on Your PC
 
 Install npm on your desktop and run this web locally.
 
@@ -15,7 +15,7 @@ npm install
 npx vite
 ```
 
-### Tech Stack
+## Tech Stack
 
 My focus is on exploring vanilla JavaScript and implementing trigonometry. Basically, Three.js provides everything we need.
 
