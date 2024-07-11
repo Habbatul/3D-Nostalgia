@@ -1,13 +1,10 @@
 # 3D Nostalgia 💾
-**Deployment 🎮 :** [habbatul.github.io/3D-Nostalgia/](https://habbatul.github.io/3D-Nostalgia/)
-
+**Deployment :** [habbatul.github.io/3D-Nostalgia/](https://habbatul.github.io/3D-Nostalgia/)
 **Content :**
 - [About 📺](#about)
 - [Run on Your PC 🖥️](#run_local)
 - [Tech Stack ⌨️ ](#stack)
-- [Contribute ⌨️ ](#contribute)
-
-<br>
+- [Contribute 🎮 ](#contribute)
 
 ## About <a name="#about"></a>
 
