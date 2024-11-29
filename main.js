@@ -1,16 +1,18 @@
 import * as THREE from "three";
-import { CSS2DRenderer,CSS2DObject} from "three/examples/jsm/renderers/CSS2DRenderer.js";
+import { CSS2DRenderer, CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as TWEEN from "three/examples/jsm/libs/tween.module.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { CSS3DObject } from "three/examples/jsm/Addons.js";
+import { CSS3DRenderer } from "three/examples/jsm/Addons.js";
 
 //ambil komponen canvas dari html
-const canvas = document.getElementById("canvas");
+const canvas = document.getElementById("webgl");
 
 // ========================= Inisiasi threeJS ====================
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight,0.1,1000);
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer({
   canvas: canvas,
   antialias: true,
@@ -25,7 +27,7 @@ const music = new Audio("audio/liminal-horror.mp3");
 music.loop = true;
 music.volume = 0.5;
 
-canvas.addEventListener('click', ()=>{
+canvas.addEventListener('click', () => {
   if (music.paused) {
     music.play();
   }
@@ -57,49 +59,49 @@ loaderx.load("hdri/cc2.jpg", function (texture) {
 const loader = new GLTFLoader();
 var model;
 
-loader.load("gltf/computerCustom.glb",function (gltf) {
-    model = gltf.scene;
-    model.position.set(400, -9, 4); // Set posisi model ke (0, 0, 0)
-    model.scale.set(10, 10, 10); // Ubah ukuran model dengan mengatur skala
-    model.name = "Cube013"; // Beri nama model
-    scene.add(model); // Tambahkan model ke dalam scene
+loader.load("gltf/computerCustom.glb", function (gltf) {
+  model = gltf.scene;
+  model.position.set(400, -9, 4); 
+  model.scale.set(10, 10, 10); 
+  model.name = "Cube013"; 
+  scene.add(model); 
 
-    var pointLights = [
-      new THREE.PointLight(0xffffff, 20),
-      new THREE.PointLight(0xffffff, 30),
-      new THREE.PointLight(0xffffff, 30),
-      new THREE.PointLight(0xffffff, 30),
-      new THREE.PointLight(0xffffff, 20),
-    ];
-    pointLights[0].position.set(400, 0, 0);
-    pointLights[1].position.set(410, 0, 20);
-    pointLights[2].position.set(420, 0, -20);
-    pointLights[3].position.set(380, 0, -20);
-    pointLights[3].position.set(400, 2, -30);
-    pointLights.forEach((pointLight) => {
-      scene.add(pointLight);
-    });
+  var pointLights = [
+    new THREE.PointLight(0xffffff, 20),
+    new THREE.PointLight(0xffffff, 30),
+    new THREE.PointLight(0xffffff, 30),
+    new THREE.PointLight(0xffffff, 30),
+    new THREE.PointLight(0xffffff, 20),
+  ];
+  pointLights[0].position.set(400, 0, 0);
+  pointLights[1].position.set(410, 0, 20);
+  pointLights[2].position.set(420, 0, -20);
+  pointLights[3].position.set(380, 0, -20);
+  pointLights[3].position.set(400, 2, -30);
+  pointLights.forEach((pointLight) => {
+    scene.add(pointLight);
+  });
 
-    // Buat spotlight untuk pencahayaan
-    const spotLight2 = new THREE.SpotLight(0xffffff, 1000);
-    spotLight2.position.set(350, 30, 50);
-    spotLight2.angle = Math.PI / 10;
-    spotLight2.penumbra = 1;
-    spotLight2.decay = 1.2;
-    spotLight2.distance = 90;
+  //Buat spotlight untuk pencahayaan
+  const spotLight2 = new THREE.SpotLight(0xffffff, 1000);
+  spotLight2.position.set(350, 30, 50);
+  spotLight2.angle = Math.PI / 10;
+  spotLight2.penumbra = 1;
+  spotLight2.decay = 1.2;
+  spotLight2.distance = 90;
 
-    spotLight2.target.position.set(400, 0, -4); // Atur posisi target ke (0, 0, 0)
+  spotLight2.target.position.set(400, 0, -4); 
 
-    spotLight2.castShadow = true;
+  spotLight2.castShadow = true;
 
-    // Atur ukuran peta bayangan
-    spotLight2.shadow.mapSize.width = 512;
-    spotLight2.shadow.mapSize.height = 512;
+  //Atur ukuran peta bayangan
+  spotLight2.shadow.mapSize.width = 512;
+  spotLight2.shadow.mapSize.height = 512;
 
-    scene.add(spotLight2);
+  scene.add(spotLight2);
 
-    const spotLightHelper = new THREE.SpotLightHelper(spotLight2);
-  },
+  const spotLightHelper = new THREE.SpotLightHelper(spotLight2);
+},
   undefined,
   function (error) {
     console.error(error);
@@ -139,7 +141,7 @@ text5.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
 text5.style.textAlign = "justify";
 text5.style.padding = "1rem";
 text5.style.lineHeight = "1.5";
-text5.style.transition = "opacity 0.5s ease-in-out"; //animasi opacity transisi
+text5.style.transition = "opacity 0.3s ease-in-out"; //animasi opacity transisi
 text5.style.opacity = "0"; //set opacity awal menjadi 0
 var label5 = new CSS2DObject(text5);
 label5.position.set(0, 0, 5);
@@ -158,7 +160,7 @@ text.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
 text.style.textAlign = "justify";
 text.style.padding = "1rem";
 text.style.lineHeight = "1.5";
-text.style.transition = "opacity 0.5s ease-in-out"; //animasi opacity
+text.style.transition = "opacity 0.3s ease-in-out"; //animasi opacity
 text.style.opacity = "0"; //set opacity awal menjadi 0
 var label = new CSS2DObject(text);
 label.position.set(0, 0, 5);
@@ -178,13 +180,13 @@ text2.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
 text2.style.textAlign = "justify";
 text2.style.padding = "1rem";
 text2.style.lineHeight = "1.5";
-text2.style.transition = "opacity 0.5s ease-in-out"; //animasi opacity transisi
+text2.style.transition = "opacity 0.3s ease-in-out"; //animasi opacity transisi
 text2.style.opacity = "0"; //set opacity awal menjadi 0
 var label2 = new CSS2DObject(text2);
 label2.position.set(0, 0, 5);
 
 
-var textContent3 = `Sometimes, the presence of people around us is not enough to fill the emptiness inside. The silence feels so deep even in the midst of the hustle and bustle of everyday life.`;
+var textContent3 = `Sometimes, the presence of people around us is not enough to fill the emptiness inside.`;
 var text3 = document.createElement("div");
 text3.innerHTML = `
   <div id="typedText"></div>
@@ -197,7 +199,7 @@ text3.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
 text3.style.textAlign = "justify";
 text3.style.padding = "1rem";
 text3.style.lineHeight = "1.5";
-text3.style.transition = "opacity 0.5s ease-in-out"; //animasi opacity transisi
+text3.style.transition = "opacity 0.3s ease-in-out"; //animasi opacity transisi
 text3.style.opacity = "0"; //set opacity awal menjadi 0
 var label3 = new CSS2DObject(text3);
 label3.position.set(0, 0, 5);
@@ -219,7 +221,7 @@ text4.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
 text4.style.textAlign = "justify";
 text4.style.padding = "1rem";
 text4.style.lineHeight = "1.5";
-text4.style.transition = "opacity 0.5s ease-in-out"; //animasi opacity transisi
+text4.style.transition = "opacity 0.3s ease-in-out"; //animasi opacity transisi
 text4.style.opacity = "0"; //set opacity awal menjadi 0
 var label4 = new CSS2DObject(text4);
 label4.position.set(0, 0, 5);
@@ -265,7 +267,7 @@ function typeWriter(textElement, text, speed, clickHereElement) {
 }
 
 //animasi ketik untuk menampilkan teks
-async function animateText(textElement,textContent,speed,clickHereElement) {
+async function animateText(textElement, textContent, speed, clickHereElement) {
   //hapus teks sebelum memulai animasi ketik
   textElement.textContent = "";
   await typeWriter(textElement, textContent, speed, clickHereElement);
@@ -288,21 +290,21 @@ function opacityTransitionEndHandler(labelElement, textContent, speed) {
 //event listener untuk label2
 label2.element.addEventListener("transitionend", (event) => {
   if (event.propertyName === "opacity") {
-    opacityTransitionEndHandler(label2.element, textContent2, 20);
+    opacityTransitionEndHandler(label2.element, textContent2, 10);
   }
 });
 
 //event listener untuk label
 label.element.addEventListener("transitionend", (event) => {
   if (event.propertyName === "opacity") {
-    opacityTransitionEndHandler(label.element, textContent, 20);
+    opacityTransitionEndHandler(label.element, textContent, 10);
   }
 });
 
 //event listener untuk label
 label3.element.addEventListener("transitionend", (event) => {
   if (event.propertyName === "opacity") {
-    opacityTransitionEndHandler(label3.element, textContent3, 20);
+    opacityTransitionEndHandler(label3.element, textContent3, 10);
   }
 });
 
@@ -316,7 +318,7 @@ function opacityTransitionEndHandlerForLabel4(labelElement, textContent, speed, 
   clickHereElement.style.color = "red";
   if (labelElement.style.opacity === "1") {
     //jalankan animasi typing
-    typeWriter(typedTextElement,textContent,speed,clickHereElement).then(() => {
+    typeWriter(typedTextElement, textContent, speed, clickHereElement).then(() => {
       //Animasi selesai, hilangkan kelas hidden dari button1 dan button2
       buttonContainer.classList.remove("hidden");
       buttonContainer.classList.add("flex");
@@ -337,7 +339,7 @@ label4.element.addEventListener("transitionend", (event) => {
     opacityTransitionEndHandlerForLabel4(
       label4.element,
       textContent4,
-      20,
+      10,
       buttonContainer
     );
   }
@@ -348,35 +350,40 @@ label4.element.addEventListener("transitionend", (event) => {
 var started = false;
 var kameraMenunjuMonitor = false;
 label4.element.querySelector("#button1").addEventListener("click", function (event) {
-    label4.element.style.opacity = "0";
-    label4.element.addEventListener("transitionend", function (event) {
-      scene.remove(label4);
-      console.log("tutup step kembali ke step 0");
-      gotoStep = 0;
-      //kondisi step sudah sampai akhir
-      gotoDone = true;
-      cssContainer.style.pointerEvents = "none";
-      scene.add(label5);
-
-      //setelah step selesai atur kursor agar tidak hover otomatis di sumbu (0,0)
-      mouse.set(-2, -2);
-    });
-    gotoComputerPosition();
-  });
-
-label5.element.querySelector("#button1").addEventListener("click", function (event) {
-    //Behavior sama pada step 4 untuk urutan label
-    label5.element.style.opacity = "0";
+  label4.element.style.opacity = "0";
+  label4.element.addEventListener("transitionend", function (event) {
+    scene.remove(label4);
     console.log("tutup step kembali ke step 0");
     gotoStep = 0;
+    //kondisi step sudah sampai akhir
+    gotoDone = true;
     cssContainer.style.pointerEvents = "none";
+    scene.add(label5);
 
     //setelah step selesai atur kursor agar tidak hover otomatis di sumbu (0,0)
     mouse.set(-2, -2);
-    gotoComputerPosition();
   });
+  gotoComputerPosition();
+});
+
+label5.element.querySelector("#button1").addEventListener("click", function (event) {
+  //Behavior sama pada step 4 untuk urutan label
+  label5.element.style.opacity = "0";
+  console.log("tutup step kembali ke step 0");
+  gotoStep = 0;
+  cssContainer.style.pointerEvents = "none";
+
+  //setelah step selesai atur kursor agar tidak hover otomatis di sumbu (0,0)
+  mouse.set(-2, -2);
+  gotoComputerPosition();
+});
 
 function gotoComputerPosition() {
+
+  //jarak camera pada saat tampilan komputer
+  rotateCameraDistance = 30;
+
+
   //matikan objective diatas cube (tulisan h1)
   objectiveVisible = false;
 
@@ -459,15 +466,15 @@ const secondaryScene = new THREE.Scene();
 //Ini untuk frame bentuk windows xp dan paint
 var textureLoader = new THREE.TextureLoader();
 var textureXp = textureLoader.load('texture/paint-xp.png');
-var materialjpeg = new THREE.MeshBasicMaterial({ 
-  map: textureXp, 
+var materialjpeg = new THREE.MeshBasicMaterial({
+  map: textureXp,
   transparent: true
 });
-var geometryXp = new THREE.PlaneGeometry(5, 4); 
+var geometryXp = new THREE.PlaneGeometry(5, 4);
 var PlaneFrame = new THREE.Mesh(geometryXp, materialjpeg);
 secondaryCamera.add(PlaneFrame);
 secondaryScene.add(secondaryCamera);
-PlaneFrame.scale.set(3.02,3.8)
+PlaneFrame.scale.set(3.02, 3.8)
 PlaneFrame.position.set(0, -0.1, -10);
 
 
@@ -516,19 +523,19 @@ const crtTVShader = {
     void main() {
     vec2 uv = vUv;
 
-    // Efek vignette
+    //Efek vignette
     float radius = 0.85;
     float softness = 0.4;
     vec2 center = vec2(0.5, 0.5);
     float vignette = smoothstep(radius, radius - softness, length(uv - center));
 
-    // Efek garis lurus
+    //Efek garis lurus
     vec2 p = mod(uv * vec2(100.0, 60.0), vec2(1.0));
     vec3 col = texture2D(tDiffuse, uv).rgb;
     col *= 0.9 + 0.1 * sin(30.0 * p.x * sin(time) + 30.0 * p.y * cos(time));
     col *= 0.95 + 0.05 * sin(32.0 * p.x * sin(time) + 32.0 * p.y * cos(time));
     
-    // Gabungkan efek vignette dan garis lurus
+    //Gabungkan efek vignette dan garis lurus
     col *= vignette;
 
     gl_FragColor = vec4(col, 1.0);
@@ -547,7 +554,7 @@ var materialMonitor = new THREE.ShaderMaterial({
 materialMonitor.uniforms.tDiffuse.value = renderTarget.texture;
 
 //Mesh untuk renderTarget
-var geometry = new THREE.PlaneGeometry(5, 4); 
+var geometry = new THREE.PlaneGeometry(5, 4);
 var mesh = new THREE.Mesh(geometry, materialMonitor);
 mesh.position.set(400, 3.4, -4.56);
 mesh.scale.set(3.5, 3, 1);
@@ -561,8 +568,8 @@ controls.dampingFactor = 0.25;
 controls.enableZoom = true;
 controls.enablePan = false;
 controls.target.set(0, 0, -25);
-controls.minDistance = 24; 
-controls.maxDistance = 120; 
+controls.minDistance = 24;
+controls.maxDistance = 120;
 
 
 //============================== gltf loader untuk rendertarget
@@ -570,7 +577,7 @@ loader.load(
   "gltf/SeabedLamp3D.glb",
   function (gltf) {
     const model = gltf.scene;
-    model.position.set(0, -8, -25); 
+    model.position.set(0, -8, -25);
     model.scale.set(30, 30, 30);
     model.name = "uhuy";
     secondaryScene.add(model);
@@ -608,20 +615,30 @@ window.addEventListener("touchmove", onTouchMove, false);
 
 
 //================== animasi untuk rotasi terabatas mengikuti kursor mouse/touch =================
+var rotateCameraDistance = 30;
+var isWebMode = false;
+//saat tekan tombol menuju monitor
 function rotateCamera() {
   if (kameraMenunjuMonitor) {
-    const pivot = new THREE.Vector3(400, -9, 4);
-    const pivot2 = new THREE.Vector3(400, 0, -8);
-    const pivot3 = new THREE.Vector3(400, 0, 0);
-    const distance = 30;
+    if(isWebMode){
+      var pivot = new THREE.Vector3(400, -5, 4);
+      var pivot2 = new THREE.Vector3(400, 4, -8);
+      var pivot3 = new THREE.Vector3(400, 4, 0);
+    }else{
+      var pivot = new THREE.Vector3(400, -9, 4);
+      var pivot2 = new THREE.Vector3(400, 0, -8);
+      var pivot3 = new THREE.Vector3(400, 0, 0);
+    }
+
+    var distance = rotateCameraDistance;
 
     //Membatasi rotasi
-    const angleX = 1.5 + Math.min(Math.max(mouse.x, -0.5), 0.5) * (Math.PI / 4);
-    const angleY = Math.min(Math.max(-mouse.y + 1, 0.5), 10) * (Math.PI / 4);
+    var angleX = 1.5 + Math.min(Math.max(mouse.x, -0.5), 0.5) * (Math.PI / 4);
+    var angleY = Math.min(Math.max(-mouse.y + 1, 0.5), 10) * (Math.PI / 4);
 
-    const newX = pivot.x + distance * Math.cos(angleX);
-    const newY = pivot.y + distance * Math.sin(angleY);
-    const newZ = pivot3.z + distance * Math.sin(angleX);
+    var newX = pivot.x + distance * Math.cos(angleX);
+    var newY = pivot.y + distance * Math.sin(angleY);
+    var newZ = pivot3.z + distance * Math.sin(angleX);
 
     //Tween animasi rotasi kamera
     new TWEEN.Tween(camera.position)
@@ -826,22 +843,22 @@ var isMouseDown = false;
 var isZooming = false;
 
 function initialAnimation(distanceFromPivot, currentAngle) {
-    tween = new TWEEN.Tween(secondaryCamera.position)
-        .to({ x: pivot1.x + distanceFromPivot * Math.cos(currentAngle), y: initialPosition1.y, z: pivot1.z + distanceFromPivot * Math.sin(currentAngle) }, 500)
-        .onComplete(() => {
-            rotate1 = new TWEEN.Tween({ angle: currentAngle })
-                .to({ angle: currentAngle + Math.PI * 2 }, 4000)
-                .onUpdate((obj) => {
-                    var angle = obj.angle;
-                    var newX = pivot1.x + distanceFromPivot * Math.cos(angle);
-                    var newZ = pivot1.z + distanceFromPivot * Math.sin(angle);
-                    secondaryCamera.position.set(newX, initialPosition1.y, newZ);
-                    secondaryCamera.lookAt(pivot1);
-                })
-                .repeat(Infinity)
-                .start();
+  tween = new TWEEN.Tween(secondaryCamera.position)
+    .to({ x: pivot1.x + distanceFromPivot * Math.cos(currentAngle), y: initialPosition1.y, z: pivot1.z + distanceFromPivot * Math.sin(currentAngle) }, 500)
+    .onComplete(() => {
+      rotate1 = new TWEEN.Tween({ angle: currentAngle })
+        .to({ angle: currentAngle + Math.PI * 2 }, 4000)
+        .onUpdate((obj) => {
+          var angle = obj.angle;
+          var newX = pivot1.x + distanceFromPivot * Math.cos(angle);
+          var newZ = pivot1.z + distanceFromPivot * Math.sin(angle);
+          secondaryCamera.position.set(newX, initialPosition1.y, newZ);
+          secondaryCamera.lookAt(pivot1);
         })
+        .repeat(Infinity)
         .start();
+    })
+    .start();
 }
 
 initialAnimation(distance1, InitialAngle1);
@@ -854,26 +871,26 @@ function getCurrentAngle(objectPosition, pivotPosition) {
 //Memulai Tween jika tidak sedang menahan tombol mouse
 function startTween(distance, currentAngle) {
   if (!isMouseDown && !isZooming) {
-      initialAnimation(distance, currentAngle);
+    initialAnimation(distance, currentAngle);
   }
 }
 
 //Menghentikan Tween saat menahan tombol mouse
 function stopTween() {
   if (isMouseDown || isZooming) {
-      tween.stop();
-      if (rotate1) rotate1.stop(); //Menghentikan tween rotate jika ada
+    tween.stop();
+    if (rotate1) rotate1.stop(); //Menghentikan tween rotate jika ada
   }
 }
 
 function onMouseDown(event) {
-      isMouseDown = true;
-      stopTween();
+  isMouseDown = true;
+  stopTween();
 }
 
 function onMouseUp(event) {
-      isMouseDown = false;
-      startTween(new THREE.Vector3().copy(secondaryCamera.position).distanceTo(pivot1), getCurrentAngle(new THREE.Vector3().copy(secondaryCamera.position),pivot1));
+  isMouseDown = false;
+  startTween(new THREE.Vector3().copy(secondaryCamera.position).distanceTo(pivot1), getCurrentAngle(new THREE.Vector3().copy(secondaryCamera.position), pivot1));
 }
 
 //Event listener untuk mouse move, mouse down, dan mouse up
@@ -881,20 +898,20 @@ document.addEventListener("mousedown", onMouseDown, false);
 document.addEventListener("mouseup", onMouseUp, false);
 
 //Event listener untuk touch start
-document.addEventListener("touchstart", function(event) {
+document.addEventListener("touchstart", function (event) {
   if (!isZooming) {
-      if (event.touches.length > 2) {
-          onMouseDown(event.touches[0]);
-      }
+    if (event.touches.length > 2) {
+      onMouseDown(event.touches[0]);
+    }
   }
 }, false);
 
 //Event listener untuk touch end
-document.addEventListener("touchend", function(event) {
+document.addEventListener("touchend", function (event) {
   if (!isZooming) {
-      if (event.changedTouches.length > 2) {
-          onMouseUp(event.changedTouches[0]);
-      }  
+    if (event.changedTouches.length > 2) {
+      onMouseUp(event.changedTouches[0]);
+    }
   }
 }, false);
 
@@ -907,7 +924,7 @@ controls.addEventListener("start", function () {
 //Event listener untuk memulai kembali animasi setelah zoom selesai
 controls.addEventListener("end", function () {
   isZooming = false;
-  startTween(new THREE.Vector3().copy(secondaryCamera.position).distanceTo(pivot1), getCurrentAngle(new THREE.Vector3().copy(secondaryCamera.position),pivot1));
+  startTween(new THREE.Vector3().copy(secondaryCamera.position).distanceTo(pivot1), getCurrentAngle(new THREE.Vector3().copy(secondaryCamera.position), pivot1));
 });
 
 
@@ -941,7 +958,7 @@ buttonx.addEventListener("click", function (event) {
     "transitionend",
     function handleTransitionEnd(event) {
       containerButtonx.classList.add("hidden");
-      containerButtonx.removeEventListener("transitionend",handleTransitionEnd);
+      containerButtonx.removeEventListener("transitionend", handleTransitionEnd);
       animasitransisiend = true;
     }
   );
@@ -967,11 +984,11 @@ var objectiveVisible = true;
 function containerObjectiveVisible() {
   if (!objectiveVisible) {
     containerObjective.style.opacity = "0";
-    containerObjective.addEventListener("transitionend",function handleTransitionEnd(event) {
-        containerObjective.classList.add("hidden");
-        containerObjective.removeEventListener("transitionend",handleTransitionEnd);
-        animasitransisiend = true;
-      }
+    containerObjective.addEventListener("transitionend", function handleTransitionEnd(event) {
+      containerObjective.classList.add("hidden");
+      containerObjective.removeEventListener("transitionend", handleTransitionEnd);
+      animasitransisiend = true;
+    }
     );
   } else {
     containerObjective.style.opacity = "1";
@@ -979,11 +996,416 @@ function containerObjectiveVisible() {
   }
 }
 
+
+
+
+
+//===========================modifkasi fitur tambahan terbaru (implementasi lihat find keywor "fitur")===================
+const cssRenderer3D = new CSS3DRenderer();
+cssRenderer3D.setSize(window.innerWidth, window.innerHeight);
+cssRenderer3D.domElement.style.position = "absolute";
+cssRenderer3D.domElement.style.top = 0;
+document.querySelector("#css").appendChild(cssRenderer3D.domElement);
+
+
+const container = document.createElement("div");
+container.style.width = "1000px";
+container.style.height = "1000px";
+container.style.background = "#1d2e2f";
+
+const iframe = document.createElement("iframe");
+iframe.src = "https://habbatul.github.io/gudang-project-kuliah/";
+iframe.style.width = "1000px";
+iframe.style.height = "1000px";
+iframe.style.border = "none";
+container.appendChild(iframe);
+
+const css3DObject = new CSS3DObject(container);
+css3DObject.position.set(400, 3.31, -4.54);
+css3DObject.scale.set(0.017, 0.0115, 1);
+css3DObject.rotation.set(-0.1386, 0, 0);
+scene.add(css3DObject);
+
+//Tambahkan GL Plane (Transparan untuk wadah css3drenderer) ======================
+const planeGeometry = new THREE.PlaneGeometry(1000, 1000);
+const planeMaterial = new THREE.MeshStandardMaterial({
+  opacity: 0,
+  transparent: true,
+  blending: THREE.NoBlending,
+  side: THREE.DoubleSide,
+  metalness: 5
+});
+
+const glPlane = new THREE.Mesh(planeGeometry, planeMaterial);
+glPlane.position.copy(css3DObject.position);
+glPlane.rotation.copy(css3DObject.rotation);
+glPlane.scale.copy(css3DObject.scale);
+
+
+//Tambahkan -plane shader (Transparan untuk css3drenderer)
+const crtTVShader2 = {
+  uniforms: {
+    time: { value: 0 },
+  },
+  vertexShader: `
+    varying vec2 vUv;
+    void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: `
+    uniform float time;
+    varying vec2 vUv;
+
+    void main() {
+        vec2 uv = vUv;
+
+        //Efek garis lurus
+        vec2 p = mod(uv * vec2(60.0, 40.0), vec2(1.0));
+        float pattern = 0.9 + 0.1 * sin(30.0 * p.x * sin(time) + 30.0 * p.y * cos(time));
+        pattern *= 0.95 + 0.05 * sin(32.0 * p.x * sin(time) + 32.0 * p.y * cos(time));
+
+        //Warna dasar hitam, kita hanya akan menggunakan pola untuk warna
+        vec3 finalColor = vec3(0.0);  //Hitam untuk warna dasar
+
+        //Set alpha berdasarkan pola
+        float alpha = max(pattern, 0.0); //Pastikan alpha tidak kurang dari 0
+
+        //Gabungkan warna final dengan pola dan set alpha
+        gl_FragColor = vec4(finalColor, alpha-0.64);
+    }
+  `,
+};
+
+
+var materialMonitorWeb = new THREE.ShaderMaterial({
+  uniforms: THREE.UniformsUtils.clone(crtTVShader2.uniforms),
+  vertexShader: crtTVShader2.vertexShader,
+  fragmentShader: crtTVShader2.fragmentShader,
+  transparent: true,
+});
+
+const shaderScreen = new THREE.Mesh(planeGeometry, materialMonitorWeb);
+shaderScreen.position.set(css3DObject.position.x, css3DObject.position.y, css3DObject.position.z+0.01);
+shaderScreen.rotation.copy(css3DObject.rotation);
+shaderScreen.scale.copy(css3DObject.scale);
+
+
+const screenWebGroup = new THREE.Group();
+
+screenWebGroup.add(shaderScreen);
+screenWebGroup.add(glPlane);
+scene.add(screenWebGroup);
+
+//buat isWebOpen false untuk inisiasi
+var isWebOpen = false;
+
+
+
+///==============================fitur tambahan yak ("Lanjutan akses elemen button")
+
+const containerCSS3D = document.querySelector("#css");
+const containerWebGL= document.querySelector("#webgl");
+
+const buttonEndWeb = document.getElementById("buttonEndWeb");
+const buttonControlOrbit = document.getElementById("buttonControlOrbit");
+const containerButtonEndWeb = document.getElementById("containerButtonEndWeb");
+const buttonx2 = document.getElementById("buttonx2");
+
+
+//menuju ke mode web
+buttonx2.addEventListener("click", function () {
+  //matikan rotatecamera raycast
+  kameraMenunjuMonitor = false;
+
+  var distance;
+  if (window.matchMedia("(min-width: 1024px)").matches) {
+    distance=10;
+  } else {
+    distance = 17;
+  }
+
+  //pkek pivot (ngakalin biar transisi ga ngeglitch)
+  var pivot = new THREE.Vector3(400, 4, -8);
+  var pivotBefore = new THREE.Vector3(400, 0, -8);
+
+  var an1mate = new TWEEN.Tween(camera.position)
+    .to({ x: 400, y: 4, z: distance })
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .onUpdate(() => {
+      camera.lookAt(pivotBefore);
+    })
+    .onComplete(() => {
+
+      //rotasikan dulu ke pivot agar gerakan lebih mulus
+      var startRotation = new THREE.Euler().copy(camera.rotation);
+      camera.lookAt(pivot);
+      var endRotation = new THREE.Euler().copy(camera.rotation);
+      camera.rotation.copy(startRotation);
+
+      new TWEEN.Tween(camera.rotation)
+        .to({ x: endRotation.x, y: endRotation.y, z: endRotation.z }, 500)
+        .onComplete(() => {
+
+          kameraMenunjuMonitor = true;
+
+          //jarak antara kamera dengan objek
+          rotateCameraDistance = distance;
+
+          //mode rotasi untuk web aktif
+          isWebMode = true;
+
+          //kondisi menampilkan web (planeGL - metode blinding untuk css)
+          isWebOpen = true;
+          containerButtonEndWeb.classList.remove("hidden");
+          containerButtonEndWeb.style.opacity = "1";
+        })
+        .start()
+    })
+    .start();
+
+  //handle animasi transisi button dissolve
+  containerButtonx.style.opacity = "0";
+  containerButtonx.addEventListener(
+    "transitionend",
+    function handleTransitionEnd(event) {
+      //setting behacvior mouse dulu
+      containerCSS3D.style.pointerEvents = 'auto'; 
+      containerWebGL.style.pointerEvents = 'none'; 
+
+      containerButtonx.classList.add("hidden");
+
+
+      containerButtonx.removeEventListener("transitionend", handleTransitionEnd);
+    }
+  );
+});
+
+
+//kembalikan ke posisi semula dan matikan web
+buttonEndWeb.addEventListener('click', function(){
+  kameraMenunjuMonitor = false;
+  var pivot = new THREE.Vector3(400, 0, -8);
+
+  var pivotBefore = new THREE.Vector3(400, 4, -8);
+  
+  new TWEEN.Tween(camera.position)
+    .to({ x: 400, y: 8, z: 25 },800)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .onUpdate(() => {
+
+      //buat transisi rotasi dari pivot sebelumnya ke pivot saat ini
+      const startQuaternion = camera.quaternion.clone();
+      camera.lookAt(pivot); 
+      const endQuaternion = camera.quaternion.clone();
+
+      camera.quaternion.copy(startQuaternion);
+      camera.quaternion.slerp(endQuaternion, 0.5);
+
+    })
+    .onComplete(() => {
+      // Setelah animasi selesai
+      mouse.set(0, 0);
+      rotateCameraDistance = 30;
+      kameraMenunjuMonitor = true;
+      isWebOpen = false;
+      isWebMode = false;
+    })
+    .start();
+
+
+  containerButtonEndWeb.style.opacity = "0";
+  containerButtonEndWeb.addEventListener(
+    "transitionend",
+    function handleTransitionEnd(event) {
+
+      //setting mouse nya dulu
+      containerCSS3D.style.pointerEvents = 'none'; 
+      containerWebGL.style.pointerEvents = 'auto'; 
+
+      containerButtonEndWeb.classList.add("hidden");
+      containerButtonx.classList.remove("hidden");
+      containerButtonx.style.opacity = "1";
+      containerButtonEndWeb.removeEventListener("transitionend", handleTransitionEnd);
+    }
+  );
+})
+
+
+//event aktif mode orbit control saat dari mode web
+var mainCameraControls;
+
+buttonControlOrbit.addEventListener('click', function () {
+  kameraMenunjuMonitor = false; //Matikan fungsi rotatecamera raycast
+
+  const pivot = new THREE.Vector3(400, 0, -8);
+
+  //tidak perlu beri duration, nanti dia malah terpotong
+  new TWEEN.Tween(camera.position)
+    .to({ x: 400, y: 0, z: 35 })
+    .onUpdate(() => {
+
+      //buat transisi rotasi dari pivot sebelumnya ke pivot saat ini
+      const startQuaternion = camera.quaternion.clone();
+      camera.lookAt(pivot);
+      const endQuaternion = camera.quaternion.clone();
+
+      camera.quaternion.copy(startQuaternion);
+      camera.quaternion.slerp(endQuaternion, 0.5);
+
+    })
+    .onComplete(()=>{
+      mainCameraControls = new OrbitControls(camera, renderer.domElement);
+      mainCameraControls.enableZoom = true;
+      mainCameraControls.enablePan = false;
+      mainCameraControls.enableDamping = true;
+      mainCameraControls.dampingFactor = 0.04;
+      mainCameraControls.target.copy(pivot);
+      mainCameraControls.minDistance = camera.position.z + 8;
+      mainCameraControls.maxDistance = 80; 
+    })
+    .start();
+
+  //buat bisa berinteraksi dengan canvas
+  containerCSS3D.style.pointerEvents = 'none';
+  containerWebGL.style.pointerEvents = 'auto'; 
+
+  containerButtonEndWeb.style.opacity = "0";
+  containerButtonEndWeb.addEventListener(
+    "transitionend",
+    function handleTransitionEnd(event) {
+
+      //setting mouse nya dulu
+      containerButtonEndWeb.classList.add("hidden");
+      containerButtonWhenOrbitControl.classList.remove("hidden");
+      containerButtonWhenOrbitControl.style.opacity = "1";
+      containerButtonEndWeb.removeEventListener("transitionend", handleTransitionEnd);
+    }
+  );
+
+});
+
+var containerButtonWhenOrbitControl = document.querySelector("#containerButtonWhenOrbitControl");
+var buttonBackToWeb = document.querySelector('#buttonBackToWeb');
+
+
+
+//button balik ke web dari mode orbit control
+buttonBackToWeb.addEventListener('click', function () {
+  //delete orbitcontrol
+  if (mainCameraControls) {
+    //Hapus semua event listener yang ditambahkan oleh OrbitControls
+    mainCameraControls.dispose(); 
+    mainCameraControls = null;  
+  }
+
+  //matikan rotate camera raycast
+  kameraMenunjuMonitor = false;
+
+
+
+  var distance;
+  if (window.matchMedia("(min-width: 1024px)").matches) {
+    distance = 10;
+  } else {
+    distance = 17;
+  }
+
+  //pkek pivot (ngakalin biar transisi ga ngeglitch)
+  var pivot = new THREE.Vector3(400, 4, -8);
+
+  var an1mate = new TWEEN.Tween(camera.position)
+    .to({ x: 400, y: 0, z: distance }, 1000)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .onUpdate(() => {
+
+      //buat transisi rotasi dari pivot sebelumnya ke pivot saat ini
+      const startQuaternion = camera.quaternion.clone();
+      camera.lookAt(pivot);
+      const endQuaternion = camera.quaternion.clone();
+
+      camera.quaternion.copy(startQuaternion);
+      camera.quaternion.slerp(endQuaternion, 0.7);
+
+    })
+    .onComplete(() => {
+      kameraMenunjuMonitor = true;
+      rotateCameraDistance = distance;
+      isWebOpen = true;
+    }
+    )
+    .start();
+
+  //handle animasi transisi button dissolve
+  containerButtonWhenOrbitControl.style.opacity = "0";
+  containerButtonWhenOrbitControl.addEventListener(
+    "transitionend",
+    function handleTransitionEnd(event) {
+      //setting behacvior mouse dulu
+      containerCSS3D.style.pointerEvents = 'auto';
+      containerWebGL.style.pointerEvents = 'none';
+
+      containerButtonWhenOrbitControl.classList.add("hidden");
+      containerButtonEndWeb.classList.remove("hidden");
+      containerButtonEndWeb.style.opacity = "1";
+      containerButtonWhenOrbitControl.removeEventListener("transitionend", handleTransitionEnd);
+    }
+  );
+})
+
+
+//cek web sedang open tidak
+//disini ada render untuk **render target** dan *render css3d**
+function checkScreenWebOpen() {
+  if (isWebOpen) {
+    if (!screenWebGroup.visible) {
+      screenWebGroup.visible = true;
+    }
+
+    //hapus renderer jadi hitam
+    renderer.setRenderTarget(renderTarget);
+    renderer.clear();  
+    renderer.setRenderTarget(null);
+
+    cssRenderer3D.render(scene, camera);
+
+  } else {
+    if (screenWebGroup.visible) {
+      screenWebGroup.visible = false;
+    }
+
+    //render ke secondary scene jika web tidak terbuka
+    renderer.setRenderTarget(renderTarget);
+    renderer.render(secondaryScene, secondaryCamera);
+    renderer.setRenderTarget(null);
+  }
+}
+
+
+//warm-up dummy quaternion pemanasan animasi quaternion
+const warmUp = new TWEEN.Tween(camera.position)
+  .to({ x: 0, y: 0, z: 30 }, 10) 
+  .onUpdate(() => {
+    const dummyStart = camera.quaternion.clone();
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
+    const dummyEnd = camera.quaternion.clone();
+    camera.quaternion.copy(dummyStart);
+    camera.quaternion.slerp(dummyEnd, 0.1);
+  })
+  .start();
+
+
+
+
+
+//============================= Main =========================
+
 //fungsi animasi
 function animate() {
   requestAnimationFrame(animate);
 
-  if(cube){
+  if (cube) {
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
     onMouseMoveOnBox();
@@ -996,15 +1418,21 @@ function animate() {
 
   TWEEN.update();
 
+  materialMonitorWeb.uniforms.time.value += 0.01;
+
   materialMonitor.uniforms.time.value += 0.01;
   rotateCamera();
 
+  if (mainCameraControls) {
+    mainCameraControls.update();
+  }
+
   controls.update();
-  renderer.setRenderTarget(renderTarget);
-  renderer.render(secondaryScene, secondaryCamera);
-  renderer.setRenderTarget(null);
+
   renderer.render(scene, camera);
   cssRenderer.render(scene, camera);
+
+  checkScreenWebOpen()
 }
 
 
