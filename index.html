@@ -14,9 +14,6 @@
       body {
         margin: 0;
       }
-      canvas {
-        display: block;
-      }
       .hidden {
         display: none;
         visibility: hidden;
@@ -35,18 +32,51 @@
         font-weight: 400;
         font-style: normal;
       }
+
+      #css{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      } 
+      #webgl {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
     </style>
-    <script type="module" crossorigin src="/3D-Nostalgia/assets/index-D9Cy6TBB.js"></script>
+    <script type="module" crossorigin src="/3D-Nostalgia/assets/index-CofHQPS1.js"></script>
   </head>
   <body class="saira-condensed-light" style="overflow: hidden">
-    <canvas id="canvas"></canvas>
+
+    <div id="css"></div>
+    <canvas id="webgl"></canvas>
+
+    <div id="containerButtonWhenOrbitControl" class="hidden"  style="transition: opacity 0.5s ease-in-out; opacity: 1; position: absolute; top: 8%; left: 50%; transform: translate(-50%, -50%); z-index: 99; display: flex; justify-content: center; align-items: center;">
+        <button id="buttonBackToWeb" class="jersey" style="background: linear-gradient(120deg, rgba(0, 201, 255, 0.2), rgba(126, 208, 255, 0.8)); border: 1px solid rgb(0, 0, 0); color: black; padding: 0.4rem 1rem; text-align: center; text-decoration: none; display: inline-block; font-size: 1rem; cursor: pointer; border-radius: 10px; width: 7.5rem;">Interact with The Website</button>
+        <p style="color: aliceblue;width:8rem;text-align: center;margin-left:1rem;line-height: 1rem;">Hold & scroll/pinch the screen to control the camera!!!</p>
+    </div>
+
+    <div id="containerButtonEndWeb" class="hidden" style="transition: opacity 0.5s ease-in-out; opacity: 0; position: absolute; top: 8%; left: 50%; transform: translate(-50%, -50%); z-index: 99; display: flex; justify-content: center; align-items: center;">
+        <button id="buttonEndWeb" class="jersey" style="background: linear-gradient(120deg, rgba(0, 201, 255, 0.2), rgba(126, 208, 255, 0.8)); border: 1px solid rgb(0, 0, 0); color: black; padding: 0.4rem 1rem; text-align: center; text-decoration: none; display: inline-block; font-size: 1rem; cursor: pointer; border-radius: 10px; margin-right: 0.5rem; width: 7.5rem;">Turn Off The Website</button>
+        <button id="buttonControlOrbit" class="jersey" style="background: linear-gradient(120deg, rgba(0, 201, 255, 0.2), rgba(126, 208, 255, 0.8)); border: 1px solid rgb(0, 0, 0); color: black; padding: 0.4rem 1rem; text-align: center; text-decoration: none; display: inline-block; font-size: 1rem; cursor: pointer; border-radius: 10px; margin-left: 0.5rem; width: 7.5rem;">Control Camera</button>
+    </div>
+
 
     <div id="container-buttonx" class="hidden" style="transition: opacity 0.5s ease-in-out; opacity: 0; position: absolute; top: 8%; left: 50%; transform: translate(-50%, -50%); z-index: 99; display: flex; justify-content: center; align-items: center;">
         <button id="buttonx" class="jersey" style="background: linear-gradient(120deg, rgba(0, 201, 255, 0.2), rgba(126, 208, 255, 0.8)); border: 1px solid rgb(0, 0, 0); color: black; padding: 0.4rem 1rem; text-align: center; text-decoration: none; display: inline-block; font-size: 1rem; cursor: pointer; border-radius: 10px; margin-right: 0.5rem; width: 5.5rem;">Go To the Box</button>
         <button id="buttonx2" class="jersey" style="background: linear-gradient(120deg, rgba(0, 201, 255, 0.2), rgba(126, 208, 255, 0.8)); border: 1px solid rgb(0, 0, 0); color: black; padding: 0.4rem 1rem; text-align: center; text-decoration: none; display: inline-block; font-size: 1rem; cursor: pointer; border-radius: 10px; margin-left: 0.5rem; width: 5.5rem;">Go To Nostalgia</button>
     </div>
+
+
     <div id="container-objective" class="hidden inter" style="transition: opacity 0.5s ease-in-out; opacity: 1; position: absolute; top: 5rem; left: 50%; transform: translate(-50%, -50%); z-index: 99; display: flex; justify-content: center; align-items: center;">
         <p style="color: white;text-align: center;font-size: 2.5rem;font-weight:300;">Click The Cube</p>
     </div>
+
+
 </body>
 </html>
