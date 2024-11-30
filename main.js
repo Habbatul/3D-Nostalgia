@@ -1009,25 +1009,25 @@ document.querySelector("#css").appendChild(cssRenderer3D.domElement);
 
 
 const container = document.createElement("div");
-container.style.width = "1000px";
-container.style.height = "1000px";
+container.style.width = "1025px";
+container.style.height = "728px";
 container.style.background = "#1d2e2f";
 
 const iframe = document.createElement("iframe");
 iframe.src = "https://habbatul.github.io/gudang-project-kuliah/";
-iframe.style.width = "1000px";
-iframe.style.height = "1000px";
+iframe.style.width = "1025px";
+iframe.style.height = "728px";
 iframe.style.border = "none";
 container.appendChild(iframe);
 
 const css3DObject = new CSS3DObject(container);
-css3DObject.position.set(400, 3.31, -4.54);
-css3DObject.scale.set(0.017, 0.0115, 1);
-css3DObject.rotation.set(-0.1386, 0, 0);
+css3DObject.position.set(400, 3.27, -4.54);
+css3DObject.scale.set(0.0169, 0.0162, 1);
+css3DObject.rotation.set(-0.1389, 0, 0);
 scene.add(css3DObject);
 
 //Tambahkan GL Plane (Transparan untuk wadah css3drenderer) ======================
-const planeGeometry = new THREE.PlaneGeometry(1000, 1000);
+const planeGeometry = new THREE.PlaneGeometry(1025, 728);
 const planeMaterial = new THREE.MeshStandardMaterial({
   opacity: 0,
   transparent: true,
@@ -1073,7 +1073,7 @@ const crtTVShader2 = {
         float alpha = max(pattern, 0.0); //Pastikan alpha tidak kurang dari 0
 
         //Gabungkan warna final dengan pola dan set alpha
-        gl_FragColor = vec4(finalColor, alpha-0.64);
+        gl_FragColor = vec4(finalColor, alpha-0.8);
     }
   `,
 };
