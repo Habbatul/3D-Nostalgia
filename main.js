@@ -1193,7 +1193,7 @@ buttonEndWeb.addEventListener('click', function(){
   new TWEEN.Tween(camera.position)
     .to({ x: 400, y: 8, z: 25 },800)
     .easing(TWEEN.Easing.Quadratic.InOut)
-    .onUpdate(() => {
+    .onUpdate((v,t) => {
 
       //buat transisi rotasi dari pivot sebelumnya ke pivot saat ini
       const startQuaternion = camera.quaternion.clone();
@@ -1201,7 +1201,7 @@ buttonEndWeb.addEventListener('click', function(){
       const endQuaternion = camera.quaternion.clone();
 
       camera.quaternion.copy(startQuaternion);
-      camera.quaternion.slerp(endQuaternion, 0.5);
+      camera.quaternion.slerp(endQuaternion, t);
 
     })
     .onComplete(() => {
@@ -1244,7 +1244,8 @@ buttonControlOrbit.addEventListener('click', function () {
   //tidak perlu beri duration, nanti dia malah terpotong
   new TWEEN.Tween(camera.position)
     .to({ x: 400, y: 0, z: 35 })
-    .onUpdate(() => {
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .onUpdate((v,t) => {
 
       //buat transisi rotasi dari pivot sebelumnya ke pivot saat ini
       const startQuaternion = camera.quaternion.clone();
@@ -1252,7 +1253,7 @@ buttonControlOrbit.addEventListener('click', function () {
       const endQuaternion = camera.quaternion.clone();
 
       camera.quaternion.copy(startQuaternion);
-      camera.quaternion.slerp(endQuaternion, 0.5);
+      camera.quaternion.slerp(endQuaternion, t);
 
     })
     .onComplete(()=>{
@@ -1264,6 +1265,10 @@ buttonControlOrbit.addEventListener('click', function () {
       mainCameraControls.target.copy(pivot);
       mainCameraControls.minDistance = camera.position.z + 8;
       mainCameraControls.maxDistance = 80; 
+
+      //handle animasi transisi button dissolve
+      containerButtonWhenOrbitControl.classList.remove("hidden");
+      containerButtonWhenOrbitControl.style.opacity = "1";
     })
     .start();
 
@@ -1271,15 +1276,12 @@ buttonControlOrbit.addEventListener('click', function () {
   containerCSS3D.style.pointerEvents = 'none';
   containerWebGL.style.pointerEvents = 'auto'; 
 
+  //handle animasi transisi button dissolve
   containerButtonEndWeb.style.opacity = "0";
   containerButtonEndWeb.addEventListener(
     "transitionend",
     function handleTransitionEnd(event) {
-
-      //setting mouse nya dulu
       containerButtonEndWeb.classList.add("hidden");
-      containerButtonWhenOrbitControl.classList.remove("hidden");
-      containerButtonWhenOrbitControl.style.opacity = "1";
       containerButtonEndWeb.removeEventListener("transitionend", handleTransitionEnd);
     }
   );
@@ -1303,8 +1305,6 @@ buttonBackToWeb.addEventListener('click', function () {
   //matikan rotate camera raycast
   kameraMenunjuMonitor = false;
 
-
-
   var distance;
   if (window.matchMedia("(min-width: 1024px)").matches) {
     distance = 10;
@@ -1318,7 +1318,7 @@ buttonBackToWeb.addEventListener('click', function () {
   var an1mate = new TWEEN.Tween(camera.position)
     .to({ x: 400, y: 0, z: distance }, 1000)
     .easing(TWEEN.Easing.Quadratic.InOut)
-    .onUpdate(() => {
+    .onUpdate((v,t) => {
 
       //buat transisi rotasi dari pivot sebelumnya ke pivot saat ini
       const startQuaternion = camera.quaternion.clone();
@@ -1326,13 +1326,19 @@ buttonBackToWeb.addEventListener('click', function () {
       const endQuaternion = camera.quaternion.clone();
 
       camera.quaternion.copy(startQuaternion);
-      camera.quaternion.slerp(endQuaternion, 0.7);
+      camera.quaternion.slerp(endQuaternion, t);
 
     })
     .onComplete(() => {
       kameraMenunjuMonitor = true;
       rotateCameraDistance = distance;
       isWebOpen = true;
+
+      //handle animasi transisi button dissolve
+      containerCSS3D.style.pointerEvents = 'auto';
+      containerWebGL.style.pointerEvents = 'none';
+      containerButtonEndWeb.classList.remove("hidden");
+      containerButtonEndWeb.style.opacity = "1";
     }
     )
     .start();
@@ -1343,12 +1349,7 @@ buttonBackToWeb.addEventListener('click', function () {
     "transitionend",
     function handleTransitionEnd(event) {
       //setting behacvior mouse dulu
-      containerCSS3D.style.pointerEvents = 'auto';
-      containerWebGL.style.pointerEvents = 'none';
-
       containerButtonWhenOrbitControl.classList.add("hidden");
-      containerButtonEndWeb.classList.remove("hidden");
-      containerButtonEndWeb.style.opacity = "1";
       containerButtonWhenOrbitControl.removeEventListener("transitionend", handleTransitionEnd);
     }
   );
