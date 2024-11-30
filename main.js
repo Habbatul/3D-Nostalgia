@@ -417,11 +417,11 @@ function gotoComputerPosition() {
         .to({ x: endRotation.x, y: endRotation.y, z: endRotation.z }, 800)
         .easing(TWEEN.Easing.Quadratic.InOut)
         .onUpdate(function () {
-          console.log(camera.rotation);
+          // console.log(camera.rotation);
         })
         .onComplete(() => {
           new TWEEN.Tween({ angle: angleValue })
-            .to({ angle: Math.PI * 4.5 }, 3000)
+            .to({ angle: Math.PI * 2.5 }, 1600)
             .onUpdate((obj) => {
               var angle = obj.angle;
               var newX = pivot.x + distance * Math.cos(angle);
@@ -1037,7 +1037,7 @@ const planeMaterial = new THREE.MeshStandardMaterial({
 });
 
 const glPlane = new THREE.Mesh(planeGeometry, planeMaterial);
-glPlane.position.copy(css3DObject.position);
+glPlane.position.set(css3DObject.position.x, css3DObject.position.y, css3DObject.position.z + 0.01);
 glPlane.rotation.copy(css3DObject.rotation);
 glPlane.scale.copy(css3DObject.scale);
 
@@ -1087,7 +1087,7 @@ var materialMonitorWeb = new THREE.ShaderMaterial({
 });
 
 const shaderScreen = new THREE.Mesh(planeGeometry, materialMonitorWeb);
-shaderScreen.position.set(css3DObject.position.x, css3DObject.position.y, css3DObject.position.z+0.01);
+shaderScreen.position.set(css3DObject.position.x, css3DObject.position.y, css3DObject.position.z+0.012);
 shaderScreen.rotation.copy(css3DObject.rotation);
 shaderScreen.scale.copy(css3DObject.scale);
 
