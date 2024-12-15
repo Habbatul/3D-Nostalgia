@@ -12,7 +12,7 @@ const canvas = document.getElementById("webgl");
 
 // ========================= Inisiasi threeJS ====================
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer({
   canvas: canvas,
   antialias: true,
@@ -37,22 +37,35 @@ canvas.addEventListener('click', () => {
 let cube;
 
 const loaderx = new THREE.TextureLoader();
-loaderx.load("hdri/cc2.jpg", function (texture) {
-  // Menggunakan texture sebagai background scene
+loaderx.load("hdri/background-liminal-hqhan.webp", function (texture) {
+  //buat texture agar ditampilkan sesuai aslinya
+  texture.encoding = THREE.sRGBEncoding; 
+  texture.colorSpace = THREE.SRGBColorSpace; 
+  texture.magFilter = THREE.LinearFilter;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+
+  //konversi tekstur menjadi cube render target
   const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
   rt.fromEquirectangularTexture(renderer, texture);
+
   scene.background = rt.texture;
-  // Setelah latar belakang selesai dimuat, buat objek kubus
-  const geometry = new THREE.BoxGeometry(10, 10, 10);
-  const material = new THREE.MeshStandardMaterial({
-    color: 0x00ff00,
-    envMap: rt.texture,
-    roughness: 0,
-    metalness: 1,
-  });
-  cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
+  scene.environment = rt.texture;
+  scene.environmentRotation = new THREE.Euler(0,0,0);
+  scene.backgroundRotation = new THREE.Euler(0,0,0);
 });
+
+
+//make a cube, uji coba pkek scene environtment aja
+const geometryCube = new THREE.BoxGeometry(10, 10, 10);
+const material = new THREE.MeshStandardMaterial({
+  color: 0x00ff00,
+  roughness: 0,
+  metalness: 1,
+});
+
+cube = new THREE.Mesh(geometryCube, material);
+scene.add(cube);
+
 
 
 //========================= Disini adalah bagian GLTF Loader ======================
@@ -64,6 +77,14 @@ loader.load("gltf/computerCustom.glb", function (gltf) {
   model.position.set(400, -9, 4); 
   model.scale.set(10, 10, 10); 
   model.name = "Cube013"; 
+
+  //hilangkan frustumCulled agar selalu dirender tanpa menunggu muncul pada jarak pandang
+  model.traverse((object) => {
+    if (object.isMesh) {
+      object.frustumCulled = false;
+    }
+  });
+
   scene.add(model); 
 
   var pointLights = [
@@ -380,9 +401,12 @@ label5.element.querySelector("#button1").addEventListener("click", function (eve
 
 function gotoComputerPosition() {
 
+  //tammbahan rotate background
+  new TWEEN.Tween(scene.backgroundRotation)
+      .to({y:1.6}, 1500).start();
+
   //jarak camera pada saat tampilan komputer
   rotateCameraDistance = 30;
-
 
   //matikan objective diatas cube (tulisan h1)
   objectiveVisible = false;
@@ -404,7 +428,7 @@ function gotoComputerPosition() {
       },
       1500
     )
-    .easing(TWEEN.Easing.Cubic.InOut)
+    .easing(TWEEN.Easing.Quadratic.InOut)
     .onComplete(() => {
       var startRotation = new THREE.Euler().copy(camera.rotation);
 
@@ -420,6 +444,9 @@ function gotoComputerPosition() {
           // console.log(camera.rotation);
         })
         .onComplete(() => {
+          //buat cube hidden
+          cube.visible = false;
+
           new TWEEN.Tween({ angle: angleValue })
             .to({ angle: Math.PI * 2.5 }, 1600)
             .onUpdate((obj) => {
@@ -428,7 +455,7 @@ function gotoComputerPosition() {
               var newZ = pivot.z + distance * Math.sin(angle);
               camera.position.set(newX, initialPosition.y, newZ);
               camera.lookAt(pivot);
-              console.log(camera.rotation);
+              // console.log(camera.rotation);
             })
             .easing(TWEEN.Easing.Quadratic.InOut)
             .onComplete(() => {
@@ -442,6 +469,18 @@ function gotoComputerPosition() {
                 .onComplete(() => {
                   mouse.set(0, 0);
                   kameraMenunjuMonitor = true;
+                  
+                  //set frustumCulled jadi true lagi
+                  if (model) {
+                    model.traverse((object) => {
+                      if (object.isMesh) {
+                        console.log(object.frustumCulled)
+                        object.frustumCulled = true
+                        console.log(object.frustumCulled)
+                      }
+                    });
+                  }
+
                 })
                 .start();
             })
@@ -931,6 +970,8 @@ controls.addEventListener("end", function () {
 
 
 //==================Akses elemen button (yang ada diatas canvas lihat pada html)=========================
+
+//menggerakan kamera kembali ke kubus awal
 const buttonx = document.getElementById("buttonx");
 const containerButtonx = document.getElementById("container-buttonx");
 var animasitransisiend = true;
@@ -938,6 +979,11 @@ var animasitransisiend = true;
 buttonx.addEventListener("click", function (event) {
   kameraMenunjuMonitor = false;
 
+  //buat cube menjadi tampak
+  cube.visible = true;
+
+  new TWEEN.Tween(scene.backgroundRotation)
+    .to({ y: 0 }, 1000).start();
   //Tween untuk menggerakkan kamera
   var an1mate = new TWEEN.Tween(camera.position)
     .to({ x: 0, y: 0, z: 30 }, 1000)
@@ -1398,14 +1444,12 @@ const warmUp = new TWEEN.Tween(camera.position)
 
 
 
-
-
 //============================= Main =========================
-
 //fungsi animasi
 function animate() {
   requestAnimationFrame(animate);
 
+  //rotasi cube dan event mouse ke kubus
   if (cube) {
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
