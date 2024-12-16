@@ -46,7 +46,7 @@ loaderx.load("hdri/background-liminal-hqhan.webp", function (texture) {
   texture.minFilter = THREE.LinearMipmapLinearFilter;
 
   //konversi tekstur menjadi cube render target
-  rt = new THREE.WebGLCubeRenderTarget(2048); //texture.image.height
+  rt = new THREE.WebGLCubeRenderTarget(texture.image.height/1.8); //size direduce krn tidak semua browser support
   rt.fromEquirectangularTexture(renderer, texture);
 
   scene.background = rt.texture;
@@ -61,7 +61,7 @@ const geometryCube = new THREE.BoxGeometry(10, 10, 10);
 const material = new THREE.MeshStandardMaterial({
   color: 0x00ff00,
   roughness: 0,
-  envMap: rt ? rt.texture : null,
+  // envMap: rt ? rt.texture : null,
   metalness: 1,
 });
 
@@ -84,7 +84,7 @@ loader.load("gltf/computerCustom.glb", function (gltf) {
   model.traverse((object) => {
     if (object.isMesh) {
       object.frustumCulled = false;
-      object.material.envMap = rt ? rt.texture : null, 
+      // object.material.envMap = rt ? rt.texture : null, 
       object.material.metalness = 0.4;
       object.material.roughness = 0.1;
     }
