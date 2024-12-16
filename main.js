@@ -82,46 +82,14 @@ loader.load("gltf/computerCustom.glb", function (gltf) {
   model.traverse((object) => {
     if (object.isMesh) {
       object.frustumCulled = false;
+      object.material.envMap = scene.environment; 
+      object.material.metalness = 0.4;
+      object.material.roughness = 0.1;
     }
   });
 
   scene.add(model); 
 
-  var pointLights = [
-    new THREE.PointLight(0xffffff, 20),
-    new THREE.PointLight(0xffffff, 30),
-    new THREE.PointLight(0xffffff, 30),
-    new THREE.PointLight(0xffffff, 30),
-    new THREE.PointLight(0xffffff, 20),
-  ];
-  pointLights[0].position.set(400, 0, 0);
-  pointLights[1].position.set(410, 0, 20);
-  pointLights[2].position.set(420, 0, -20);
-  pointLights[3].position.set(380, 0, -20);
-  pointLights[3].position.set(400, 2, -30);
-  pointLights.forEach((pointLight) => {
-    scene.add(pointLight);
-  });
-
-  //Buat spotlight untuk pencahayaan
-  const spotLight2 = new THREE.SpotLight(0xffffff, 1000);
-  spotLight2.position.set(350, 30, 50);
-  spotLight2.angle = Math.PI / 10;
-  spotLight2.penumbra = 1;
-  spotLight2.decay = 1.2;
-  spotLight2.distance = 90;
-
-  spotLight2.target.position.set(400, 0, -4); 
-
-  spotLight2.castShadow = true;
-
-  //Atur ukuran peta bayangan
-  spotLight2.shadow.mapSize.width = 512;
-  spotLight2.shadow.mapSize.height = 512;
-
-  scene.add(spotLight2);
-
-  const spotLightHelper = new THREE.SpotLightHelper(spotLight2);
 },
   undefined,
   function (error) {
@@ -1092,6 +1060,7 @@ glPlane.scale.copy(css3DObject.scale);
 const crtTVShader2 = {
   uniforms: {
     time: { value: 0 },
+    resolution: { value: new THREE.Vector2(renderTarget.width, renderTarget.height) },
   },
   vertexShader: `
     varying vec2 vUv;
@@ -1102,10 +1071,13 @@ const crtTVShader2 = {
   `,
   fragmentShader: `
     uniform float time;
+    uniform vec2 resolution;
     varying vec2 vUv;
 
     void main() {
-        vec2 uv = vUv;
+        //vec2 uv = vUv;
+        //coba pertimbangkan aspect ratio dan resolusi
+        vec2 uv = vUv * resolution / min(resolution.x, resolution.y);
 
         //Efek garis lurus
         vec2 p = mod(uv * vec2(60.0, 40.0), vec2(1.0));
@@ -1167,7 +1139,7 @@ buttonx2.addEventListener("click", function () {
 
   var distance;
   if (window.matchMedia("(min-width: 1024px)").matches) {
-    distance=10;
+    distance = 9;
   } else {
     distance = 17;
   }
@@ -1353,7 +1325,7 @@ buttonBackToWeb.addEventListener('click', function () {
 
   var distance;
   if (window.matchMedia("(min-width: 1024px)").matches) {
-    distance = 10;
+    distance = 9;
   } else {
     distance = 17;
   }
@@ -1432,7 +1404,7 @@ function checkScreenWebOpen() {
 
 //warm-up dummy quaternion pemanasan animasi quaternion
 const warmUp = new TWEEN.Tween(camera.position)
-  .to({ x: 0, y: 0, z: 30 }, 10) 
+  .to({ x: 0, y: 0, z:30 }, 10) 
   .onUpdate(() => {
     const dummyStart = camera.quaternion.clone();
     camera.lookAt(new THREE.Vector3(0, 0, 0));
