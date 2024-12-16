@@ -35,6 +35,7 @@ canvas.addEventListener('click', () => {
 
 //================== Loader untuk jpeg jadi hdri juga ada cube untuk scene awal ==================
 let cube;
+let rt;
 
 const loaderx = new THREE.TextureLoader();
 loaderx.load("hdri/background-liminal-hqhan.webp", function (texture) {
@@ -45,7 +46,7 @@ loaderx.load("hdri/background-liminal-hqhan.webp", function (texture) {
   texture.minFilter = THREE.LinearMipmapLinearFilter;
 
   //konversi tekstur menjadi cube render target
-  const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
+  rt = new THREE.WebGLCubeRenderTarget(2048); //texture.image.height
   rt.fromEquirectangularTexture(renderer, texture);
 
   scene.background = rt.texture;
@@ -60,6 +61,7 @@ const geometryCube = new THREE.BoxGeometry(10, 10, 10);
 const material = new THREE.MeshStandardMaterial({
   color: 0x00ff00,
   roughness: 0,
+  envMap: rt ? rt.texture : null,
   metalness: 1,
 });
 
@@ -82,7 +84,7 @@ loader.load("gltf/computerCustom.glb", function (gltf) {
   model.traverse((object) => {
     if (object.isMesh) {
       object.frustumCulled = false;
-      object.material.envMap = scene.environment; 
+      object.material.envMap = rt ? rt.texture : null, 
       object.material.metalness = 0.4;
       object.material.roughness = 0.1;
     }
@@ -1139,7 +1141,7 @@ buttonx2.addEventListener("click", function () {
 
   var distance;
   if (window.matchMedia("(min-width: 1024px)").matches) {
-    distance = 9;
+    distance = 8;
   } else {
     distance = 17;
   }
