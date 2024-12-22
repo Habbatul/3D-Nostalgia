@@ -23,9 +23,11 @@ renderer.antialias = true;
 
 
 //============================ Audio untuk web ==================================
-const music = new Audio("audio/liminal-horror.mp3");
+const music = new Audio("audio/3D-Nostalgia.mp3");
 music.loop = true;
 music.volume = 0.5;
+
+
 
 canvas.addEventListener('click', () => {
   if (music.paused) {
@@ -33,8 +35,17 @@ canvas.addEventListener('click', () => {
   }
 })
 
+const mouseSfx = new Audio("audio/mouse-klick.mp3");
+mouseSfx.loop = false;
+mouseSfx.volume = 0.7;
+
+document.addEventListener('mousedown', () => {
+  mouseSfx.currentTime = 0;
+  mouseSfx.play(); 
+});
+
 //================== Loader untuk jpeg jadi hdri juga ada cube untuk scene awal ==================
-let cube;
+
 let rt;
 
 const loaderx = new THREE.TextureLoader();
@@ -56,17 +67,36 @@ loaderx.load("hdri/background-liminal-hqhan.webp", function (texture) {
 });
 
 
-//make a cube, uji coba pkek scene environtment aja
-const geometryCube = new THREE.BoxGeometry(10, 10, 10);
-const material = new THREE.MeshStandardMaterial({
-  color: 0x00ff00,
-  roughness: 0,
-  // envMap: rt ? rt.texture : null,
-  metalness: 1,
-});
+let cube;
 
-cube = new THREE.Mesh(geometryCube, material);
-scene.add(cube);
+const loader1 = new GLTFLoader();
+loader1.load("gltf/kaleng.glb", function (gltf) {
+  cube = gltf.scene;
+  cube.position.set(0,-1,0);
+  cube.scale.set(13, 13, 13);
+
+  scene.add(cube);
+
+
+  new TWEEN.Tween(cube.rotation)
+    .to({ y: cube.rotation.y + Math.PI * 4}, 10000)
+    .repeat(Infinity)
+    .start(); 
+
+  new TWEEN.Tween(cube.rotation)
+    .to({ z: cube.rotation.z + Math.PI * 0.15, x: cube.rotation.x + Math.PI * 0.1}, 2000)
+    .easing(TWEEN.Easing.Quadratic.InOut) 
+    .repeat(Infinity) 
+    .yoyo(true) 
+    .delay(1000)
+    .start(); 
+
+},
+  undefined,
+  function (error) {
+    console.error(error);
+  }
+);
 
 
 
@@ -158,7 +188,7 @@ label.position.set(0, 0, 5);
 scene.add(label);
 
 
-var textContent2 = `Do you often feel lonely, even when surrounded by family and friends?`;
+var textContent2 = `The music is generated with my.soundful.com, and the 3D assets are my own.`;
 var text2 = document.createElement("div");
 text2.innerHTML = `
   <div id="typedText"></div>
@@ -225,7 +255,7 @@ var isTyping = true;
 //inisialisasi soundeffect
 const typingSound = new Audio("audio/label-typing.mp3");
 typingSound.loop = true;
-typingSound.volume = 0.1;
+typingSound.volume = 0.5;
 
 //animasi type writer untuk label yang pada css2drenderer
 function typeWriter(textElement, text, speed, clickHereElement) {
@@ -795,7 +825,13 @@ function onMouseDownOnBox(event) {
     //matikan objective diatas cube (tulisan h1)
     objectiveVisible = false;
     if (!gotoDone && gotoStep === 0) {
-      cube.material.color.set(0xff0000);
+
+      cube.traverse(function (child) {
+        if (child.isMesh) {
+          child.material.color.set(0xff0000);
+        }
+      });
+
       gotoStep = 1;
       label.element.style.opacity = "1";
       label.element.addEventListener("transitionend", function (event) {
@@ -804,7 +840,12 @@ function onMouseDownOnBox(event) {
       });
     } else if (gotoDone && gotoStep === 0) {
       //menuju ke step done
-      cube.material.color.set(0xff0000);
+      cube.traverse(function (child) {
+        if (child.isMesh) {
+          child.material.color.set(0xff0000);
+        }
+      });
+
       gotoStep = 5;
       label5.element.style.opacity = "1";
       cssContainer.style.pointerEvents = "auto";
@@ -824,18 +865,36 @@ function onMouseMoveOnBox() {
   if (intersects.length > 0) {
     if (gotoStep == 0) {
       canvas.style.cursor = "pointer";
-      cube.material.color.set(0xff0000);
+
+      cube.traverse(function (child) {
+        if (child.isMesh) {
+          child.material.color.set(0xff0000);
+        }
+      });
+
     } else {
       cssContainer.style.pointerEvents = "auto";
 
       //kondisional agar box tetap merah saat box ada
-      if (gotoStep === 0) cube.material.color.set(0x00ff00);
+      if (gotoStep === 0){
+        cube.traverse(function (child) {
+          if (child.isMesh) {
+            child.material.color.set(0xffffff);
+          }
+        });
+      }
     }
   } else {
     canvas.style.cursor = "auto";
 
     //kondisional agar box tetap merah saat box ada
-    if (gotoStep === 0) cube.material.color.set(0x00ff00);
+    if (gotoStep === 0){
+      cube.traverse(function (child) {
+        if (child.isMesh) {
+          child.material.color.set(0xffffff);
+        }
+      });
+    }
   }
 }
 
@@ -1034,7 +1093,9 @@ iframe.src = "https://habbatul.github.io/gudang-project-kuliah/";
 iframe.style.width = "1025px";
 iframe.style.height = "728px";
 iframe.style.border = "none";
+iframe.loading = "lazy"; 
 container.appendChild(iframe);
+
 
 const css3DObject = new CSS3DObject(container);
 css3DObject.position.set(400, 3.27, -4.54);
@@ -1417,16 +1478,14 @@ const warmUp = new TWEEN.Tween(camera.position)
   .start();
 
 
-
 //============================= Main =========================
+let directionZ = 1; 
 //fungsi animasi
 function animate() {
   requestAnimationFrame(animate);
 
   //rotasi cube dan event mouse ke kubus
   if (cube) {
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
     onMouseMoveOnBox();
   }
 
