@@ -103,8 +103,9 @@ loader1.load("gltf/kaleng.glb", function (gltf) {
 //========================= Disini adalah bagian GLTF Loader ======================
 const loader = new GLTFLoader();
 var model;
+let mixer;
 
-loader.load("gltf/computerCustom.glb", function (gltf) {
+loader.load("gltf/computerCustom3.glb", function (gltf) {
   model = gltf.scene;
   model.position.set(400, -9, 4); 
   model.scale.set(10, 10, 10); 
@@ -114,13 +115,22 @@ loader.load("gltf/computerCustom.glb", function (gltf) {
   model.traverse((object) => {
     if (object.isMesh) {
       object.frustumCulled = false;
-      // object.material.envMap = rt ? rt.texture : null, 
-      object.material.metalness = 0.4;
-      object.material.roughness = 0.1;
     }
   });
 
   scene.add(model); 
+
+
+  //inisialisasi AnimationMixer dengan scene dari model (glb)
+  mixer = new THREE.AnimationMixer(model);
+
+  //ambil animasi pertama (jika ada) dan mulai
+  if (gltf.animations.length > 0) {
+    const action = mixer.clipAction(gltf.animations[0]);
+    action.play();
+  }else{
+    console.log("Errorrr")
+  }
 
 },
   undefined,
@@ -613,7 +623,7 @@ controls.maxDistance = 120;
 
 //============================== gltf loader untuk rendertarget
 loader.load(
-  "gltf/SeabedLamp3D.glb",
+  "gltf/SeabedLamp3D_Lite.glb",
   function (gltf) {
     const model = gltf.scene;
     model.position.set(0, -8, -25);
@@ -1465,6 +1475,7 @@ function checkScreenWebOpen() {
 }
 
 
+
 //warm-up dummy quaternion pemanasan animasi quaternion
 const warmUp = new TWEEN.Tween(camera.position)
   .to({ x: 0, y: 0, z:30 }, 10) 
@@ -1479,7 +1490,8 @@ const warmUp = new TWEEN.Tween(camera.position)
 
 
 //============================= Main =========================
-let directionZ = 1; 
+let clock = new THREE.Clock();
+
 //fungsi animasi
 function animate() {
   requestAnimationFrame(animate);
@@ -1487,6 +1499,12 @@ function animate() {
   //rotasi cube dan event mouse ke kubus
   if (cube) {
     onMouseMoveOnBox();
+  }
+
+  //putar animasi gltf
+  if (mixer) {
+    const delta = clock.getDelta();
+    mixer.update(delta);
   }
 
   secondaryCamera.rotation.y += 0.01;
