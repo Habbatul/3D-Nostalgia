@@ -22,7 +22,11 @@ export default defineConfig({
           {
             src: 'texture/*',
             dest: 'texture'
-          }
+          },
+        {
+          src: 'web-view.html',
+          dest: '.'
+        }
       ]
     })
   ],
