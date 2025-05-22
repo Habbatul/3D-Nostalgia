@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Nostalgia</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: monospace;
+      background-color: #fff;
+      color: #000;
+    }
+
+    nav {
+      background-color: #000;
+      color: #fff;
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    nav button {
+      background: none;
+      border: 1px solid #fff;
+      color: #fff;
+      margin: 5px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    nav button:hover {
+      background-color: #fff;
+      color: #000;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      padding: 20px;
+    }
+
+    .description {
+      flex: 1;
+      padding-right: 20px;
+    }
+
+    .image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .image img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #000;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+    
+    p {
+        font-size:1.4rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <button onclick="showContent('seabed')">Seabed Lamp</button>
+    <button onclick="showContent('xp')">Windows XP</button>
+    <button onclick="showContent('ps2')">PS-2</button>
+    <button onclick="showContent('gta')">GTA San Andreas</button>
+    <button onclick="showContent('tarzan')">Game Tarzan</button>
+    <button onclick="showContent('nokia')">Nokia 3310</button>
+    <button onclick="showContent('msn')">MSN Messenger</button>
+    <button onclick="showContent('clippy')">Clippy</button>
+  </nav>
+
+  <div class="container">
+    <div class="description" id="desc">
+      <h2>Selamat datang di 3D Nostalgia</h2>
+      <p>Pilih salah satu item dari atas untuk melihat kenangan masa kecil dalam balutan gaya hitam putih klasik.</p>
+    </div>
+    <div class="image" id="img">
+      <img src="https://placehold.co/400x300?text=Nostalgia" alt="placeholder">
+    </div>
+  </div>
+
+  <script>
+    const content = {
+      seabed: {
+        title: "Seabed Lamp (Frutiger Aero)",
+        text: "Lampu kaca berisi air dan gelembung, sering jadi pajangan aesthetic ala 2000-an. Efek cahaya dan bentuk khas Frutiger Aero.",
+        img: "https://placehold.co/400x300?text=Seabed+Lamp"
+      },
+      xp: {
+        title: "Windows XP",
+        text: "Sistem operasi legendaris dengan wallpaper padang rumput biru. Ikon klasik dan startup sound yang ikonik.",
+        img: "https://placehold.co/400x300?text=Windows+XP"
+      },
+      ps2: {
+        title: "PlayStation 2",
+        text: "Konsol legendaris Sony. Suara booting dan memori card screen membekas di ingatan banyak anak 2000-an.",
+        img: "https://placehold.co/400x300?text=PS2"
+      },
+      gta: {
+        title: "GTA San Andreas",
+        text: "Game open-world ikonik. Karakter CJ dan sepeda, serta kode cheat tak terlupakan.",
+        img: "https://placehold.co/400x300?text=GTA+San+Andreas"
+      },
+      tarzan: {
+        title: "Game Tarzan",
+        text: "Platformer klasik dari Disney dengan soundtrack khas dan gameplay yang seru di masa kecil.",
+        img: "https://placehold.co/400x300?text=Tarzan+Game"
+      },
+      nokia: {
+        title: "Nokia 3310",
+        text: "Ponsel legendaris dengan daya tahan luar biasa dan game Snake yang adiktif.",
+        img: "https://placehold.co/400x300?text=Nokia+3310"
+      },
+      msn: {
+        title: "MSN Messenger",
+        text: "Layanan chatting jadul yang penuh dengan emoticon klasik dan buzz.",
+        img: "https://placehold.co/400x300?text=MSN+Messenger"
+      },
+      clippy: {
+        title: "Clippy (Microsoft Assistant)",
+        text: "Asisten Microsoft Office berbentuk klip kertas yang muncul tiba-tiba dengan komentar lucu.",
+        img: "https://placehold.co/400x300?text=Clippy"
+      }
+    };
+
+    function showContent(key) {
+      const desc = document.getElementById("desc");
+      const img = document.getElementById("img").querySelector("img");
+
+      desc.innerHTML = `<h2>${content[key].title}</h2><p>${content[key].text}</p>`;
+      img.src = content[key].img;
+      img.alt = content[key].title;
+    }
+  </script>
+
+</body>
+</html>
