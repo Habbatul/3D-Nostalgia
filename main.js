@@ -1108,8 +1108,9 @@ container.appendChild(iframe);
 
 
 const css3DObject = new CSS3DObject(container);
-css3DObject.position.set(400, 3.27, -4.54);
-css3DObject.scale.set(0.0169, 0.0162, 1);
+css3DObject.position.set(400, 3.15, -4.53);
+// css3DObject.position.set(400, 3.191, -4.54);
+css3DObject.scale.set(0.0168, 0.01575, 1);
 css3DObject.rotation.set(-0.1389, 0, 0);
 scene.add(css3DObject);
 
@@ -1189,7 +1190,7 @@ screenWebGroup.add(shaderScreen);
 screenWebGroup.add(glPlane);
 scene.add(screenWebGroup);
 
-//buat isWebOpen false untuk inisiasi
+//buat isWebOpen false untuk inisiasi (layar web blank)
 var isWebOpen = false;
 
 
@@ -1477,16 +1478,16 @@ function checkScreenWebOpen() {
 
 
 //warm-up dummy quaternion pemanasan animasi quaternion
-const warmUp = new TWEEN.Tween(camera.position)
-  .to({ x: 0, y: 0, z:30 }, 10) 
-  .onUpdate(() => {
-    const dummyStart = camera.quaternion.clone();
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
-    const dummyEnd = camera.quaternion.clone();
-    camera.quaternion.copy(dummyStart);
-    camera.quaternion.slerp(dummyEnd, 0.1);
-  })
-  .start();
+// const warmUp = new TWEEN.Tween(camera.position)
+//   .to({ x: 0, y: 0, z:30 }, 10) 
+//   .onUpdate(() => {
+//     const dummyStart = camera.quaternion.clone();
+//     camera.lookAt(new THREE.Vector3(0, 0, 0));
+//     const dummyEnd = camera.quaternion.clone();
+//     camera.quaternion.copy(dummyStart);
+//     camera.quaternion.slerp(dummyEnd, 0.1);
+//   })
+//   .start();
 
 
 //============================= Main =========================
