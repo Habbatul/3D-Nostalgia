@@ -7,10 +7,12 @@ import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { CSS3DObject } from "three/examples/jsm/Addons.js";
 import { CSS3DRenderer } from "three/examples/jsm/Addons.js";
 
-//ambil komponen canvas dari html
+/**
+ * Inisiasi threejs canvas lewat canvas
+ * inisiasi audio browser
+ */
 const canvas = document.getElementById("webgl");
 
-// ========================= Inisiasi threeJS ====================
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer({
@@ -21,13 +23,9 @@ var renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.antialias = true;
 
-
-//============================ Audio untuk web ==================================
 const music = new Audio("audio/3D-Nostalgia.mp3");
 music.loop = true;
 music.volume = 0.5;
-
-
 
 canvas.addEventListener('click', () => {
   if (music.paused) {
@@ -1099,7 +1097,7 @@ container.style.height = "728px";
 container.style.background = "#1d2e2f";
 
 const iframe = document.createElement("iframe");
-iframe.src = "https://habbatul.github.io/3D-Nostalgia/web-view.html";
+iframe.src = "./web-view.html";
 iframe.style.width = "1025px";
 iframe.style.height = "728px";
 iframe.style.border = "none";

@@ -1,154 +1,985 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>3D Nostalgia</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: monospace;
-      background-color: #fff;
-      color: #000;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nostalgia 2000s - Frutiger Aero</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
 
-    nav {
-      background-color: #000;
-      color: #fff;
-      padding: 10px;
-      display: flex;
-      flex-wrap: wrap;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    nav button {
-      background: none;
-      border: 1px solid #fff;
-      color: #fff;
-      margin: 5px;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 50%, #6c5ce7 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
 
-    nav button:hover {
-      background-color: #fff;
-      color: #000;
-    }
+/* Background Bubbles */
+.background-bubbles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
 
-    .container {
-      display: flex;
-      flex-direction: row;
-      padding: 20px;
-    }
+.background-bubbles::before,
+.background-bubbles::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  animation: float 6s ease-in-out infinite;
+}
 
-    .description {
-      flex: 1;
-      padding-right: 20px;
-    }
+.background-bubbles::before {
+  width: 200px;
+  height: 200px;
+  top: 20%;
+  left: 10%;
+  animation-delay: -2s;
+}
 
-    .image {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+.background-bubbles::after {
+  width: 150px;
+  height: 150px;
+  top: 60%;
+  right: 15%;
+  animation-delay: -4s;
+}
 
-    .image img {
-      max-width: 100%;
-      height: auto;
-      border: 2px solid #000;
-    }
+/* Glass Header */
+.glass-header {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0 0 30px 30px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
 
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
-    }
-    
-    p {
-        font-size:1.4rem;
-    }
+.header-content {
+  position: relative;
+  z-index: 2;
+}
 
-    h2 {
-        font-size: 2rem;
-    }
-  </style>
+.main-title {
+  font-size: 3rem;
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+}
+
+.title-glow {
+  background: linear-gradient(45deg, #fff, #74b9ff, #fff);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s ease-in-out infinite;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+.subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+
+.header-orb {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+  border-radius: 50%;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+}
+
+/* Content Grid */
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+/* Card Styles */
+.content-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.content-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.content-card:hover::before {
+  left: 100%;
+}
+
+.content-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+  transition: transform 0.4s ease;
+}
+
+.content-card:hover .card-image {
+  transform: scale(1.05);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card-text {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Floating Particles */
+.floating-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: floatUp 8s linear infinite;
+}
+
+/* Animations */
+@keyframes shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100vh) scale(0);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 2rem;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .glass-header {
+    padding: 1.5rem;
+  }
+}
+
+/* Click Effect */
+.content-card.clicked {
+  animation: clickPulse 0.3s ease;
+}
+
+@keyframes clickPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Windows 7 Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.windows-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  max-width: 90vw;
+  height: 600px;
+  max-height: 90vh;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #e8e8e8 100%);
+  border: 1px solid #999;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.windows-modal.fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  top: 0 !important;
+  left: 0 !important;
+  transform: none !important;
+  border-radius: 0;
+}
+
+.window-titlebar {
+  height: 30px;
+  background: linear-gradient(to bottom, #4d90fe 0%, #4787ed 100%);
+  border-bottom: 1px solid #3079ed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+  cursor: move;
+  user-select: none;
+}
+
+.window-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.window-icon {
+  width: 16px;
+  height: 16px;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 4H4c-1.11 0-2 .89-2 2v3h2V6h4V4zm6 0v2h4v3h2V6c0-1.11-.89-2-2-2h-4zm-6 15H4v-3H2v3c0 1.11.89 2 2 2h4v-2zm6 0v2h4c1.11 0 2-.89 2-2v-3h-2v3h-4z"/></svg>')
+    center / contain no-repeat;
+}
+
+.title-text {
+  font-family: "Segoe UI", sans-serif;
+}
+
+.window-controls {
+  display: flex;
+  gap: 2px;
+}
+
+.control-btn {
+  width: 21px;
+  height: 21px;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.close-btn:hover {
+  background: #e81123;
+}
+
+.window-content {
+  flex: 1;
+  background: #fff;
+  overflow: auto;
+  padding: 20px;
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  height: 100%;
+}
+
+.modal-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-info h2 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+.modal-info p {
+  color: #555;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.modal-details {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #495057;
+}
+
+.detail-value {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.window-statusbar {
+  height: 22px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #e0e0e0 100%);
+  border-top: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 11px;
+  color: #666;
+}
+
+/* Responsive Modal */
+@media (max-width: 768px) {
+  .windows-modal {
+    width: 95vw;
+    height: 80vh;
+  }
+
+  .modal-body {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .modal-image-container {
+    max-height: 250px;
+  }
+}
+
+/* Modal Animation */
+.windows-modal.opening {
+  animation: modalOpen 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalOpen {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+    </style>
 </head>
 <body>
+    <div class="background-bubbles"></div>
+    
+    <header class="glass-header">
+        <div class="header-content">
+            <h1 class="main-title">
+                <span class="title-glow">Nostalgia 2000s</span>
+            </h1>
+            <p class="subtitle">Kenangan Indah Era Digital</p>
+        </div>
+        <div class="header-orb"></div>
+    </header>
 
-  <nav id="navbar">
-    <button onclick="showContent('seabed')">Seabed Lamp</button>
-    <button onclick="showContent('xp')">Windows XP</button>
-    <button onclick="showContent('ps2')">PS-2</button>
-    <button onclick="showContent('gta')">GTA San Andreas</button>
-    <button onclick="showContent('tarzan')">Game Tarzan</button>
-    <button onclick="showContent('nokia')">Nokia 3310</button>
-    <button onclick="showContent('msn')">MSN Messenger</button>
-    <button onclick="showContent('clippy')">Clippy</button>
-  </nav>
+    <main class="container">
+        <div class="content-grid" id="contentGrid">
+            <!-- Content akan diisi oleh JavaScript -->
+        </div>
+    </main>
 
-  <div class="container">
-    <div class="description" id="desc">
-      <h2>Selamat datang di 3D Nostalgia</h2>
-      <p>Pilih salah satu item dari atas untuk melihat kenangan masa kecil dalam balutan gaya hitam putih klasik.</p>
+    <div class="floating-particles"></div>
+
+    <!-- Windows 7 Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="windows-modal" id="windowsModal">
+            <div class="window-titlebar" id="windowTitlebar">
+                <div class="window-title">
+                    <div class="window-icon"></div>
+                    <span class="title-text" id="modalTitle">Windows Explorer</span>
+                </div>
+                <div class="window-controls">
+                    <button class="control-btn minimize-btn" id="minimizeBtn">
+                        <span>−</span>
+                    </button>
+                    <button class="control-btn maximize-btn" id="maximizeBtn">
+                        <span>□</span>
+                    </button>
+                    <button class="control-btn close-btn" id="closeBtn">
+                        <span>×</span>
+                    </button>
+                </div>
+            </div>
+            <div class="window-content" id="windowContent">
+                <div class="modal-body">
+                    <div class="modal-image-container">
+                        <img id="modalImage" src="/placeholder.svg" alt="" class="modal-image">
+                    </div>
+                    <div class="modal-info">
+                        <h2 id="modalContentTitle"></h2>
+                        <p id="modalContentText"></p>
+                        <div class="modal-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Era:</span>
+                                <span class="detail-value">2000s</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Kategori:</span>
+                                <span class="detail-value">Nostalgia</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value">Legendary</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="window-statusbar">
+                <span class="status-text">Ready</span>
+            </div>
+        </div>
     </div>
-    <div class="image" id="img">
-      <img src="https://placehold.co/400x300?text=Nostalgia" alt="placeholder">
-    </div>
-  </div>
-
-  <script>
-    const content = {
-      seabed: {
-        title: "Seabed Lamp (Frutiger Aero)",
-        text: "Lampu kaca berisi air dan gelembung, sering jadi pajangan aesthetic ala 2000-an. Efek cahaya dan bentuk khas Frutiger Aero.",
-        img: "https://placehold.co/400x300?text=Seabed+Lamp"
-      },
-      xp: {
-        title: "Windows XP",
-        text: "Sistem operasi legendaris dengan wallpaper padang rumput biru. Ikon klasik dan startup sound yang ikonik.",
-        img: "https://placehold.co/400x300?text=Windows+XP"
-      },
-      ps2: {
-        title: "PlayStation 2",
-        text: "Konsol legendaris Sony. Suara booting dan memori card screen membekas di ingatan banyak anak 2000-an.",
-        img: "https://placehold.co/400x300?text=PS2"
-      },
-      gta: {
-        title: "GTA San Andreas",
-        text: "Game open-world ikonik. Karakter CJ dan sepeda, serta kode cheat tak terlupakan.",
-        img: "https://placehold.co/400x300?text=GTA+San+Andreas"
-      },
-      tarzan: {
-        title: "Game Tarzan",
-        text: "Platformer klasik dari Disney dengan soundtrack khas dan gameplay yang seru di masa kecil.",
-        img: "https://placehold.co/400x300?text=Tarzan+Game"
-      },
-      nokia: {
-        title: "Nokia 3310",
-        text: "Ponsel legendaris dengan daya tahan luar biasa dan game Snake yang adiktif.",
-        img: "https://placehold.co/400x300?text=Nokia+3310"
-      },
-      msn: {
-        title: "MSN Messenger",
-        text: "Layanan chatting jadul yang penuh dengan emoticon klasik dan buzz.",
-        img: "https://placehold.co/400x300?text=MSN+Messenger"
-      },
-      clippy: {
-        title: "Clippy (Microsoft Assistant)",
-        text: "Asisten Microsoft Office berbentuk klip kertas yang muncul tiba-tiba dengan komentar lucu.",
-        img: "https://placehold.co/400x300?text=Clippy"
-      }
-    };
-
-    function showContent(key) {
-      const desc = document.getElementById("desc");
-      const img = document.getElementById("img").querySelector("img");
-
-      desc.innerHTML = `<h2>${content[key].title}</h2><p>${content[key].text}</p>`;
-      img.src = content[key].img;
-      img.alt = content[key].title;
-    }
-  </script>
-
+    
+    <script src="script.js"></script>
 </body>
+
+<script>
+  const content = {
+  seabed: {
+    title: "Seabed Lamp (Frutiger Aero)",
+    text: "Lampu kaca berisi air dan gelembung, sering jadi pajangan aesthetic ala 2000-an. Efek cahaya dan bentuk khas Frutiger Aero yang memberikan nuansa futuristik namun natural.",
+    img: "https://placehold.co/400x300?text=Seabed+Lamp",
+  },
+  xp: {
+    title: "Windows XP",
+    text: "Sistem operasi legendaris dengan wallpaper padang rumput biru yang ikonik. Interface yang user-friendly dan startup sound yang tak terlupakan membuat XP menjadi favorit sepanjang masa.",
+    img: "https://placehold.co/400x300?text=Windows+XP",
+  },
+  ps2: {
+    title: "PlayStation 2",
+    text: "Konsol legendaris Sony yang mendominasi era 2000s. Suara booting yang khas dan tampilan memory card screen yang membekas di ingatan banyak anak 2000-an.",
+    img: "https://placehold.co/400x300?text=PS2",
+  },
+  gta: {
+    title: "GTA San Andreas",
+    text: "Game open-world ikonik dengan karakter CJ yang legendaris. Kode cheat, sepeda BMX, dan kebebasan eksplorasi Los Santos menjadi kenangan tak terlupakan.",
+    img: "https://placehold.co/400x300?text=GTA+San+Andreas",
+  },
+  tarzan: {
+    title: "Game Tarzan",
+    text: "Platformer klasik dari Disney dengan soundtrack Phil Collins yang epic. Gameplay swinging dan petualangan di hutan yang seru di masa kecil.",
+    img: "https://placehold.co/400x300?text=Tarzan+Game",
+  },
+  nokia: {
+    title: "Nokia 3310",
+    text: "Ponsel legendaris dengan daya tahan luar biasa dan game Snake yang adiktif. Simbol ketangguhan teknologi era 2000s yang tak tergantikan.",
+    img: "https://placehold.co/400x300?text=Nokia+3310",
+  },
+  msn: {
+    title: "MSN Messenger",
+    text: "Layanan chatting jadul yang penuh dengan emoticon klasik dan fitur buzz yang mengganggu tapi seru. Era keemasan komunikasi online.",
+    img: "https://placehold.co/400x300?text=MSN+Messenger",
+  },
+  clippy: {
+    title: "Clippy (Microsoft Assistant)",
+    text: "Asisten Microsoft Office berbentuk klip kertas yang muncul tiba-tiba dengan tips dan komentar lucu. Love it or hate it, Clippy adalah ikon era 2000s.",
+    img: "https://placehold.co/400x300?text=Clippy",
+  },
+}
+
+class Windows7Modal {
+  constructor() {
+    this.contentGrid = document.getElementById("contentGrid")
+    this.modal = document.getElementById("windowsModal")
+    this.modalOverlay = document.getElementById("modalOverlay")
+    this.titlebar = document.getElementById("windowTitlebar")
+    this.isFullscreen = false
+    this.isDragging = false
+    this.dragOffset = { x: 0, y: 0 }
+    this.originalPosition = { x: 0, y: 0 }
+
+    this.init()
+  }
+
+  init() {
+    this.loadAllContent()
+    this.setupModalControls()
+    this.setupDragFunctionality()
+    this.createFloatingParticles()
+    this.setupCardInteractions()
+  }
+
+  loadAllContent() {
+    Object.values(content).forEach((contentData) => {
+      this.addContentCard(contentData)
+    })
+  }
+
+  addContentCard(contentData) {
+    const card = document.createElement("div")
+    card.className = "content-card"
+    card.innerHTML = `
+      <img src="${contentData.img}" alt="${contentData.title}" class="card-image">
+      <h3 class="card-title">${contentData.title}</h3>
+      <p class="card-text">${contentData.text}</p>
+    `
+
+    card.style.opacity = "0"
+    card.style.transform = "translateY(50px)"
+    this.contentGrid.appendChild(card)
+
+    setTimeout(() => {
+      card.style.transition = "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)"
+      card.style.opacity = "1"
+      card.style.transform = "translateY(0)"
+    }, 100)
+
+    return card
+  }
+
+  setupModalControls() {
+    const closeBtn = document.getElementById("closeBtn")
+    const maximizeBtn = document.getElementById("maximizeBtn")
+    const minimizeBtn = document.getElementById("minimizeBtn")
+
+    closeBtn.addEventListener("click", () => this.closeModal())
+    maximizeBtn.addEventListener("click", () => this.toggleFullscreen())
+    minimizeBtn.addEventListener("click", () => this.minimizeModal())
+
+    // Close modal when clicking overlay
+    this.modalOverlay.addEventListener("click", (e) => {
+      if (e.target === this.modalOverlay) {
+        this.closeModal()
+      }
+    })
+
+    // Escape key to close
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && this.modalOverlay.classList.contains("show")) {
+        this.closeModal()
+      }
+    })
+  }
+
+  setupDragFunctionality() {
+    this.titlebar.addEventListener("mousedown", (e) => {
+      if (this.isFullscreen) return
+
+      this.isDragging = true
+      const rect = this.modal.getBoundingClientRect()
+      this.dragOffset.x = e.clientX - rect.left
+      this.dragOffset.y = e.clientY - rect.top
+
+      document.addEventListener("mousemove", this.handleDrag)
+      document.addEventListener("mouseup", this.handleDragEnd)
+
+      this.modal.style.transition = "none"
+      document.body.style.userSelect = "none"
+    })
+  }
+
+  handleDrag = (e) => {
+    if (!this.isDragging) return
+
+    const x = e.clientX - this.dragOffset.x
+    const y = e.clientY - this.dragOffset.y
+
+    // Constrain to viewport
+    const maxX = window.innerWidth - this.modal.offsetWidth
+    const maxY = window.innerHeight - this.modal.offsetHeight
+
+    const constrainedX = Math.max(0, Math.min(x, maxX))
+    const constrainedY = Math.max(0, Math.min(y, maxY))
+
+    this.modal.style.left = constrainedX + "px"
+    this.modal.style.top = constrainedY + "px"
+    this.modal.style.transform = "none"
+  }
+
+  handleDragEnd = () => {
+    this.isDragging = false
+    this.modal.style.transition = ""
+    document.body.style.userSelect = ""
+
+    document.removeEventListener("mousemove", this.handleDrag)
+    document.removeEventListener("mouseup", this.handleDragEnd)
+  }
+
+  openModal(contentData) {
+    // Populate modal content
+    document.getElementById("modalTitle").textContent = contentData.title
+    document.getElementById("modalImage").src = contentData.img
+    document.getElementById("modalImage").alt = contentData.title
+    document.getElementById("modalContentTitle").textContent = contentData.title
+    document.getElementById("modalContentText").textContent = contentData.text
+
+    // Reset modal position and state
+    this.modal.classList.remove("fullscreen")
+    this.modal.style.left = ""
+    this.modal.style.top = ""
+    this.modal.style.transform = "translate(-50%, -50%)"
+    this.isFullscreen = false
+
+    // Show modal with animation
+    this.modalOverlay.classList.add("show")
+    this.modal.classList.add("opening")
+
+    setTimeout(() => {
+      this.modal.classList.remove("opening")
+    }, 300)
+
+    // Update status bar
+    document.querySelector(".status-text").textContent = `Viewing: ${contentData.title}`
+  }
+
+  closeModal() {
+    this.modalOverlay.classList.remove("show")
+    document.querySelector(".status-text").textContent = "Ready"
+  }
+
+  toggleFullscreen() {
+    this.isFullscreen = !this.isFullscreen
+
+    if (this.isFullscreen) {
+      this.originalPosition = {
+        left: this.modal.style.left,
+        top: this.modal.style.top,
+        transform: this.modal.style.transform,
+      }
+      this.modal.classList.add("fullscreen")
+      document.getElementById("maximizeBtn").innerHTML = "<span>❐</span>"
+    } else {
+      this.modal.classList.remove("fullscreen")
+      this.modal.style.left = this.originalPosition.left
+      this.modal.style.top = this.originalPosition.top
+      this.modal.style.transform = this.originalPosition.transform
+      document.getElementById("maximizeBtn").innerHTML = "<span>□</span>"
+    }
+  }
+
+  minimizeModal() {
+    // Simple minimize animation
+    this.modal.style.transform = "translate(-50%, -50%) scale(0.1)"
+    this.modal.style.opacity = "0"
+
+    setTimeout(() => {
+      this.closeModal()
+      this.modal.style.transform = "translate(-50%, -50%) scale(1)"
+      this.modal.style.opacity = "1"
+    }, 200)
+  }
+
+  createFloatingParticles() {
+    const particlesContainer = document.querySelector(".floating-particles")
+
+    setInterval(() => {
+      if (document.querySelectorAll(".particle").length < 15) {
+        const particle = document.createElement("div")
+        particle.className = "particle"
+        particle.style.left = Math.random() * 100 + "%"
+        particle.style.animationDuration = Math.random() * 3 + 5 + "s"
+        particle.style.animationDelay = Math.random() * 2 + "s"
+
+        particlesContainer.appendChild(particle)
+
+        setTimeout(() => {
+          if (particle.parentNode) {
+            particle.parentNode.removeChild(particle)
+          }
+        }, 8000)
+      }
+    }, 500)
+  }
+
+  setupCardInteractions() {
+    this.contentGrid.addEventListener("click", (e) => {
+      const card = e.target.closest(".content-card")
+      if (card) {
+        const title = card.querySelector(".card-title").textContent
+        const contentData = Object.values(content).find((item) => item.title === title)
+        if (contentData) {
+          this.createRippleEffect(card, e)
+          setTimeout(() => {
+            this.openModal(contentData)
+          }, 200)
+        }
+      }
+    })
+
+    this.contentGrid.addEventListener("mouseover", (e) => {
+      const card = e.target.closest(".content-card")
+      if (card) {
+        this.createHoverEffect(card)
+      }
+    })
+  }
+
+  createRippleEffect(card, event) {
+    const ripple = document.createElement("div")
+    const rect = card.getBoundingClientRect()
+    const size = Math.max(rect.width, rect.height)
+    const x = event.clientX - rect.left - size / 2
+    const y = event.clientY - rect.top - size / 2
+
+    ripple.style.cssText = `
+      position: absolute;
+      width: ${size}px;
+      height: ${size}px;
+      left: ${x}px;
+      top: ${y}px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s ease-out;
+      pointer-events: none;
+      z-index: 10;
+    `
+
+    card.style.position = "relative"
+    card.appendChild(ripple)
+
+    setTimeout(() => {
+      if (ripple.parentNode) {
+        ripple.parentNode.removeChild(ripple)
+      }
+    }, 600)
+  }
+
+  createHoverEffect(card) {
+    const glowEffect = document.createElement("div")
+    glowEffect.style.cssText = `
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #74b9ff, #00cec9, #74b9ff);
+      border-radius: 22px;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    `
+
+    card.style.position = "relative"
+    card.appendChild(glowEffect)
+
+    setTimeout(() => {
+      glowEffect.style.opacity = "0.5"
+    }, 10)
+
+    card.addEventListener(
+      "mouseleave",
+      () => {
+        glowEffect.style.opacity = "0"
+        setTimeout(() => {
+          if (glowEffect.parentNode) {
+            glowEffect.parentNode.removeChild(glowEffect)
+          }
+        }, 300)
+      },
+      { once: true },
+    )
+  }
+}
+
+// Add ripple animation to CSS dynamically
+const style = document.createElement("style")
+style.textContent = `
+  @keyframes ripple {
+    to {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+`
+document.head.appendChild(style)
+
+// Initialize when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  new Windows7Modal()
+})
+
+// Add parallax effect to header
+window.addEventListener("load", () => {
+  window.addEventListener("scroll", () => {
+    const scrolled = window.pageYOffset
+    const header = document.querySelector(".glass-header")
+    if (header) {
+      header.style.transform = `translateY(${scrolled * 0.5}px)`
+    }
+  })
+})
+
+</script>
 </html>

@@ -8,7 +8,7 @@
 
 ## 📺 About <a name="about"></a>
 
-A three-dimensional website with a digital nostalgia theme for Gen Z, featuring a lonely and liminal atmosphere. This website is created as an exploration of WebGL using Three.js. My exploration involves basic trigonometry, shaders, application of GLTF and HDRI, the combination of WebGL-Three.js with JavaScript event handlers, and more.
+A three-dimensional website with a digital nostalgia theme for Gen Z, featuring a lonely and liminal atmosphere. This website is created as an exploration of WebGL using Three.js. My exploration involves basic trigonometry, shaders, application of GLTF and HDRI, the combination of WebGL-Three.js with JavaScript event handlers, and more. This project initially started as a personal exploration, so the code contains many comments and is not well-organized, as everything is written in a single file. However, I’m planning to refactor it into a more modular structure to make it easier to maintain in the future.
 
 ## 🕹️ Run on Your PC <a name="run_local"></a>
 
