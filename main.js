@@ -1097,7 +1097,7 @@ container.style.height = "728px";
 container.style.background = "#1d2e2f";
 
 const iframe = document.createElement("iframe");
-iframe.src = "./web-view.html";
+iframe.src = "./web-monitor/web-view.html";
 iframe.style.width = "1025px";
 iframe.style.height = "728px";
 iframe.style.border = "none";

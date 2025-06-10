@@ -24,8 +24,8 @@ export default defineConfig({
             dest: 'texture'
           },
         {
-          src: 'web-view.html',
-          dest: '.'
+          src: 'web-monitor/*',
+          dest: 'web-monitor'
         }
       ]
     })

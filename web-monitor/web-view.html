@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nostalgia 2000s - Frutiger Aero</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="background-bubbles"></div>
+    
+    <header class="glass-header">
+        <div class="header-content">
+            <h1 class="main-title">
+                <span class="title-glow">Nostalgia 2000s</span>
+            </h1>
+            <p class="subtitle">Kenangan Indah Era Digital</p>
+        </div>
+        <div class="header-orb"></div>
+    </header>
+
+    <main class="container">
+        <div class="content-grid" id="contentGrid">
+            <!-- Content akan diisi oleh JavaScript -->
+        </div>
+    </main>
+
+    <div class="floating-particles"></div>
+
+    <!-- Windows 7 Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="windows-modal" id="windowsModal">
+            <div class="window-titlebar" id="windowTitlebar">
+                <div class="window-title">
+                    <div class="window-icon"></div>
+                    <span class="title-text" id="modalTitle">Windows Explorer</span>
+                </div>
+                <div class="window-controls">
+                    <button class="control-btn minimize-btn" id="minimizeBtn">
+                        <span>−</span>
+                    </button>
+                    <button class="control-btn maximize-btn" id="maximizeBtn">
+                        <span>□</span>
+                    </button>
+                    <button class="control-btn close-btn" id="closeBtn">
+                        <span>×</span>
+                    </button>
+                </div>
+            </div>
+            <div class="window-content" id="windowContent">
+                <div class="modal-body">
+                    <div class="modal-image-container">
+                        <img id="modalImage" src="/placeholder.svg" alt="" class="modal-image">
+                    </div>
+                    <div class="modal-info">
+                        <h2 id="modalContentTitle"></h2>
+                        <p id="modalContentText"></p>
+                        <div class="modal-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Era:</span>
+                                <span class="detail-value">2000s</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Kategori:</span>
+                                <span class="detail-value">Nostalgia</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value">Legendary</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="window-statusbar">
+                <span class="status-text">Ready</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="./script.js"></script>
+</body>
+</html>
